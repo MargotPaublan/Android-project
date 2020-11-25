@@ -1,10 +1,11 @@
-package android.project.spotitop;
+package android.project.spotitop.presentation.topsongsdisplay;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.project.spotitop.R;
 
-public class MainActivity extends AppCompatActivity {
+public class TopSongsDisplayActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
