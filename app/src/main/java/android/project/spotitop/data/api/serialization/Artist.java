@@ -6,4 +6,12 @@ public class Artist {
     //Artist name
     @SerializedName("name")
     String artistName;
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
 }
