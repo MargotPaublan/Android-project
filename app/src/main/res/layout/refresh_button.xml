@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/detail_refresh_btn"
+        android:layout_width="93dp"
+        android:layout_height="94dp"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/progress"
+        android:gravity="center"
+        android:shape="oval"
+
+
+        tools:layout_editor_absoluteX="135dp"
+        tools:layout_editor_absoluteY="133dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

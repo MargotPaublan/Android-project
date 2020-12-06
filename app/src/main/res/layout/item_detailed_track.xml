@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="#eb4034">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:background="#262626"
+        >
+
+        <!-- Album track ImageView -->
+        <ImageView
+            android:id="@+id/track_icon_imageview"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_action_refresh1"/>
+
+        <!-- Track title TextView -->
+        <TextView
+            android:id="@+id/track_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textColor="#e6e9ed"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/track_icon_imageview"
+            android:layout_marginLeft="10dp"
+            tools:text="Track title" />
+
+        <!-- Track artists TextView -->
+        <TextView
+            android:id="@+id/track_artists_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#e6e9ed"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/track_title_textview"
+            app:layout_constraintLeft_toRightOf="@id/track_icon_imageview"
+            android:layout_marginLeft="10dp"
+            tools:text="Track artists" />
+
+        <!-- Album name TextView -->
+        <TextView
+            android:id="@+id/track_album_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#e6e9ed"
+            app:layout_constraintTop_toBottomOf="@+id/track_artists_textview"
+            app:layout_constraintLeft_toRightOf="@id/track_icon_imageview"
+            android:layout_marginLeft="10dp"
+            tools:text="Track album" />
+
+        <!-- Track duration TextView -->
+        <TextView
+            android:id="@+id/track_duration_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#e6e9ed"
+            app:layout_constraintTop_toBottomOf="@+id/track_album_textview"
+            app:layout_constraintLeft_toRightOf="@id/track_icon_imageview"
+            android:layout_marginLeft="10dp"
+            tools:text="Track duration" />
+
+        <!-- Track number of listenings TextView -->
+        <TextView
+            android:id="@+id/track_nb_listenings_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#e6e9ed"
+            app:layout_constraintTop_toBottomOf="@+id/track_duration_textview"
+            app:layout_constraintLeft_toRightOf="@id/track_icon_imageview"
+            android:layout_marginLeft="10dp"
+            tools:text="Nb of track listening" />
+
+        <ImageButton
+            android:id="@+id/track_button_favorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/favorite_button_selector"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@null"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
