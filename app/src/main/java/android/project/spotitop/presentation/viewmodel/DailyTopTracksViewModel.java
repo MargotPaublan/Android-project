@@ -41,7 +41,7 @@ public class DailyTopTracksViewModel extends ViewModel {
     public void searchBooks(String keywords) {
         isDataLoading.postValue(true);
         compositeDisposable.clear();
-        compositeDisposable.add(topSongsDisplayRepository.getTopTracksResponse()
+        compositeDisposable.add(topSongsDisplayRepository.getDailyTopPlayistResponse()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<PlayistResponse>() {
@@ -50,7 +50,7 @@ public class DailyTopTracksViewModel extends ViewModel {
                     public void onSuccess(PlayistResponse playistResponse) {
                         isDataLoading.setValue(false);
                         //todo : bien faire le mapper et la réponse
-                        tracks.setValue(trackToTrackViewItemMapper.map(playistResponse.getTracksList()));
+                        tracks.setValue(trackToTrackViewItemMapper.map(playistResponse.getTracksList().getDailyTopTrack()));
                     }
 
                     @Override

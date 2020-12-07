@@ -12,18 +12,18 @@ import io.reactivex.Single;
 @Dao
 public interface TopSongDAO {
 
-    @Query("SELECT * FROM topSongs")
+    @Query("SELECT * FROM topSongsTable")
     Flowable<List<TrackEntity>> getLastDailyTop();
 
     @Insert
-    Completable addSong(TrackEntity trackEntity);
+    Completable addTrack(TrackEntity trackEntity);
 
-    @Query("DELETE FROM topSongs WHERE id = :id")
-    Completable deleteSong(String id);
+    @Query("DELETE FROM topSongsTable WHERE id = :id")
+    Completable deleteTrack(String id);
 
 
 
-    @Query("SELECT id from topSongs")
+    @Query("SELECT id from topSongsTable")
     Single<List<String>> getLastDailyTopIDList();
 
 }

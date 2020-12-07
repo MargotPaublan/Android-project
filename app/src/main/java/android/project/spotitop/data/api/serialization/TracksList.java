@@ -8,4 +8,8 @@ public class TracksList {
     // A list of tracks objects
     @SerializedName("tracks")
     List<Track> tracks;
+
+    public List<Track> getDailyTopTrack() {
+        return this.tracks;
+    }
 }

@@ -11,6 +11,7 @@ public interface TopSongsDisplayService {
      * Get the global top 50 songs playist from spotify (id of the playist : 37i9dQZEVXbMDoHDwVN2tF)
      * And return a TopSongsResponse object which contains the useful infos of the JSON response from the Spotify API
      */
-    @GET("/v1/playlists/37i9dQZEVXbMDoHDwVN2tF")
+    @GET("/playlists/37i9dQZEVXbMDoHDwVN2tF")
+    // todo : changer pour @GET("/playlists/{playist_id}}")
     Single<PlayistResponse> getTopTracks(@Path("playlist_id") String playist_id, @Query("key") String apikey);
 }
