@@ -7,6 +7,7 @@ import com.facebook.stetho.Stetho;
 
 public class SpotiTopApplication extends Application {
     public static final String API_KEY = "BQD5rGrx9mxMZNXeNck5EfX1GPa94ONn0t-8S1k1gVbtrsdkXsWXA9ijLvqy3ea3mRItJ1mlLRUVnEleaNATIVB2n1qR7oNGlINnnqzMuUhDaMdtUgrA1sQdipLlo6PgebSAk8_-0Wh1SQ";
+    public static final String ID_TOP_PLAYIST = "37i9dQZEVXbMDoHDwVN2tF";
 
     @Override
     public void onCreate() {

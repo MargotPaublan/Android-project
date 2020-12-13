@@ -6,6 +6,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.project.spotitop.R;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +32,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             super(v);
             this.v = v;
             titleTextView = v.findViewById(R.id.track_title_textview);
-            authorsTextView = v.findViewById(R.id.track_authors_textview);
+            authorsTextView = v.findViewById(R.id.track_artists_textview);
             albumTextView = v.findViewById(R.id.track_album_textview);
             durationTextView = v.findViewById(R.id.track_duration_textview);
             iconImageView = v.findViewById(R.id.track_icon_imageview);
@@ -81,7 +88,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
                                               int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_book, parent, false);
+                .inflate(R.layout.item_track, parent, false);
         TrackViewHolder trackViewHolder = new TrackViewHolder(v, trackActionInterface);
         return trackViewHolder;
     }

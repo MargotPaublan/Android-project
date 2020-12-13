@@ -43,7 +43,14 @@ public class TopSongsDisplayDataRepository implements TopSongsDisplayRepository 
     @Override
     public Completable saveTrack(String id) {
         Single<Track> track =  topSongsDisplayRemoteDataSource.getTrackDetails(id);
-        Single<TrackEntity> trackEntity = trackToTrackEntityMapper.map(track);
+        Single<TrackEntity> trackEntity = track.map(new Function<Track, TrackEntity>() {
+            @Override
+            public TrackEntity apply(Track track) throws Exception {
+                return trackToTrackEntityMapper.map(track);
+            }
+        });
+
+
 
         Completable trackEntityResult = trackEntity.flatMapCompletable(new Function<TrackEntity, CompletableSource>() {
             @Override

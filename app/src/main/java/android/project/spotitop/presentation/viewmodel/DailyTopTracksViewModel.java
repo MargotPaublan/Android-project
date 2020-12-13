@@ -29,7 +29,7 @@ public class DailyTopTracksViewModel extends ViewModel {
     private MutableLiveData<List<TrackViewItem>> tracks = new MutableLiveData<List<TrackViewItem>>();
     private MutableLiveData<Boolean> isDataLoading = new MutableLiveData<Boolean>();
 
-    public MutableLiveData<List<TrackViewItem>> getBooks() {
+    public MutableLiveData<List<TrackViewItem>> getTracks() {
         return tracks;
     }
 
@@ -38,7 +38,7 @@ public class DailyTopTracksViewModel extends ViewModel {
     }
 
     //TODO : handle loader
-    public void searchBooks(String keywords) {
+    public void searchTopPlayist() {
         isDataLoading.postValue(true);
         compositeDisposable.clear();
         compositeDisposable.add(topSongsDisplayRepository.getDailyTopPlayistResponse()

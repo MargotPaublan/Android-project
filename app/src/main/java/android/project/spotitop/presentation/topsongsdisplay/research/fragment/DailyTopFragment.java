@@ -1,13 +1,16 @@
 package android.project.spotitop.presentation.topsongsdisplay.research.fragment;
 
 import android.os.Bundle;
+import android.project.spotitop.data.di.FakeDependencyInjection;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackActionInterface;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackAdapter;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
+import android.project.spotitop.presentation.viewmodel.DailyTopTracksViewModel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
@@ -18,18 +21,20 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.project.spotitop.R;
 
 import java.util.List;
+import java.util.Timer;
 
 public class DailyTopFragment extends Fragment implements TrackActionInterface {
-    public static final String TAB_NAME = "Daily tracks top";
+    public static final String TAB_NAME = "Daily top tracks";
     private View rootView;
     private Spinner spinnerNbOfTracksView;
-    private Button buttonRefreshView
+    private ImageButton imageButtonSearchView;
     private RecyclerView recyclerView;
     private TrackAdapter trackAdapter;
     private ProgressBar progressBar;
-    private TrackResearchViewModel trackResearchViewModel;
+    private DailyTopTracksViewModel dailyTopTracksViewModel;
     //private BookFavoriteViewModel bookFavoriteViewModel;
 
     private DailyTopFragment() {
@@ -43,14 +48,14 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        rootView = inflater.inflate(R.layout.fragment_top_tracks_listing, container, false);
         return rootView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //setupResearchView();
+        setupResearchView();
         setupRecyclerView();
         progressBar = rootView.findViewById(R.id.progress_bar);
 
@@ -58,20 +63,18 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
     }
 
     private void registerViewModels() {
-        TrackResearchViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(TrackResearchViewModel.class);
+        dailyTopTracksViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(DailyTopTracksViewModel.class);
         //bookFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(BookFavoriteViewModel.class);
         //System.out.println("FVVM is " + bookFavoriteViewModel);
 
-        //ici ?
-        trackResearchViewModel.getTopTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackViewItem>>() {
+        dailyTopTracksViewModel.getTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackViewItem>>() {
             @Override
             public void onChanged(List<TrackViewItem> trackViewItemList) {
                 trackAdapter.bindViewModels(trackViewItemList);
             }
         });
 
-        //Todo : vérifier
-        TrackResearchViewModel.getIsDataLoading().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+        dailyTopTracksViewModel.getIsDataLoading().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isDataLoading) {
                 progressBar.setVisibility(isDataLoading ? View.VISIBLE : View.GONE);
@@ -81,37 +84,10 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
 
     // todo : à faire
     private void setupResearchView() {
-        searchView = rootView.findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            private Timer timer = new Timer();
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(final String s) {
-                if (s.length() == 0) {
-                    bookSearchViewModel.cancelSubscription();
-                } else {
-                    timer.cancel();
-                    timer = new Timer();
-                    int sleep = 350;
-                    if (s.length() == 1)
-                        sleep = 5000;
-                    else if (s.length() <= 3)
-                        sleep = 300;
-                    else if (s.length() <= 5)
-                        sleep = 200;
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            bookSearchViewModel.searchBooks(s);
-                        }
-                    }, sleep);
-                }
-                return true;
+        imageButtonSearchView = rootView.findViewById(R.id.button_search_view);
+        imageButtonSearchView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dailyTopTracksViewModel.searchTopPlayist();
             }
         });
     }
@@ -123,9 +99,9 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    // todo : à faire
+    /*
     @Override
-    public void onFavoriteToggle(String bookId, boolean isFavorite) {
+    public void onFavoriteButton(String trackId, boolean isFavorite) {
         //Handle add and deletion to favorites
         if (isFavorite) {
             bookFavoriteViewModel.addBookToFavorite(bookId);
@@ -133,5 +109,5 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
         else {
             bookFavoriteViewModel.removeBookFromFavorite(bookId);
         }
-    }
+    }*/
 }

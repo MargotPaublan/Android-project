@@ -16,11 +16,11 @@ public class TopSongsDisplayRemoteDataSource {
     }
 
     //id of the playist
-    public Single<PlayistResponse> getDailyTopPlayistResponse(String playistId) {
-        return topSongsDisplayService.getTopTracks(playistId, SpotiTopApplication.API_KEY);
+    public Single<PlayistResponse> getDailyTopPlayistResponse() {
+        return topSongsDisplayService.getTopTracks(SpotiTopApplication.ID_TOP_PLAYIST, SpotiTopApplication.API_KEY);
     }
 
-    /*public Single<Track> getTrackDetails(String id){
-        return topSongsDisplayService.getTrack(id, SpotiTopApplication.API_KEY);
-    }*/
+    public Single<Track> getTrackDetails(String id){
+        return topSongsDisplayService.getTrackDetails(id, SpotiTopApplication.API_KEY);
+    }
 }
