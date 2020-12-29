@@ -10,6 +10,7 @@ import java.util.Date;
 public class AuthorizationToken {
     private String tokenBearer;
     private Instant expiresAt;
+    private String tokenType;
 
     private AuthorizationToken()
     {}
@@ -39,5 +40,11 @@ public class AuthorizationToken {
         this.expiresAt = Instant.now().plusSeconds(seconds) ;
     }
 
+    public String getTokenAuthorization() {
+        return tokenType + " " + tokenBearer;
+    }
 
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
+    }
 }

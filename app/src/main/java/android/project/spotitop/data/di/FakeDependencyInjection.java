@@ -65,7 +65,7 @@ public class FakeDependencyInjection {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl("https://api.spotify.com/v1/")
+                    .baseUrl("https://api.spotify.com/")
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create(getGson()))

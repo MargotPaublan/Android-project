@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Track {
+    @SerializedName("id")
     private String id;
     // Album object of the track
     @SerializedName("album")

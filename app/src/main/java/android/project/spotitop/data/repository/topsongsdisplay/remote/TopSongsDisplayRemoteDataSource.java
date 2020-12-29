@@ -29,6 +29,6 @@ public class TopSongsDisplayRemoteDataSource {
         String baseAuth = SpotiTopApplication.CLIENT_ID + ":" + SpotiTopApplication.CLIENT_SECRET;
         String authHeader = "Basic " + Base64.encodeToString(baseAuth.getBytes(), Base64.NO_WRAP);
         String authentificationApi = "accounts.spotify.com/api/token";
-        return topSongsDisplayService.getAuthorizationToken(authentificationApi, authHeader);
+        return topSongsDisplayService.getAuthorizationToken(authHeader, "client_credentials");
     }
 }

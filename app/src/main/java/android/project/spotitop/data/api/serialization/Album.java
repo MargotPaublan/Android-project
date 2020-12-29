@@ -6,10 +6,14 @@ import java.util.List;
 
 public class Album {
     // List of album images
-    @SerializedName("images")
-    List<AlbumImages> AlbumImageUrl;
+    //@SerializedName("images")
+    //List<AlbumImages> AlbumImageUrl;
 
     // Album name
     @SerializedName("name")
     String albumName;
+
+    public String getAlbumName() {
+        return albumName;
+    }
 }

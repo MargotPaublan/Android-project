@@ -2,16 +2,20 @@ package android.project.spotitop.presentation.viewmodel;
 
 import android.os.Build;
 import android.project.spotitop.data.api.serialization.AuthorizationResponse;
+import android.project.spotitop.data.api.serialization.Item;
 import android.project.spotitop.data.api.serialization.PlayistResponse;
+import android.project.spotitop.data.api.serialization.Track;
 import android.project.spotitop.data.repository.topsongsdisplay.TopSongsDisplayRepository;
 import android.project.spotitop.data.repository.topsongsdisplay.remote.AuthorizationToken;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
 import android.project.spotitop.presentation.topsongsdisplay.research.mapper.TrackToTrackViewItemMapper;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,6 +33,7 @@ public class DailyTopTracksViewModel extends ViewModel {
         this.topSongsDisplayRepository = topSongsDisplayRepository;
         this.compositeDisposable = new CompositeDisposable();
         this.trackToTrackViewItemMapper = new TrackToTrackViewItemMapper();
+        this.authorizationToken = AuthorizationToken.getInstance();
     }
 
     private MutableLiveData<List<TrackViewItem>> tracks = new MutableLiveData<List<TrackViewItem>>();
@@ -56,6 +61,7 @@ public class DailyTopTracksViewModel extends ViewModel {
                         isDataLoading.setValue(false);
                         authorizationToken.setExpiresAt(authorizationResponse.getExpiresInSec());
                         authorizationToken.setTokenBearer(authorizationResponse.getAccessToken());
+                        authorizationToken.setTokenType(authorizationResponse.getTokenType());
                     }
 
                     @Override
@@ -78,7 +84,8 @@ public class DailyTopTracksViewModel extends ViewModel {
             getAuthorizationToContactSpotifyAPI();
         }
 
-        compositeDisposable.add(topSongsDisplayRepository.getDailyTopPlayistResponse(authorizationToken.getTokenBearer())
+        Log.i("token", "ok" + authorizationToken.getTokenBearer());
+        compositeDisposable.add(topSongsDisplayRepository.getDailyTopPlayistResponse(authorizationToken.getTokenAuthorization())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<PlayistResponse>() {
@@ -86,7 +93,12 @@ public class DailyTopTracksViewModel extends ViewModel {
                     @Override
                     public void onSuccess(PlayistResponse playistResponse) {
                         isDataLoading.setValue(false);
-                        tracks.setValue(trackToTrackViewItemMapper.map(playistResponse.getTracksList().getDailyTopTrack()));
+
+                        List<Track> trackListResponse = new ArrayList<>();
+                        for (Item item : playistResponse.getTracks().getItems()) {
+                            trackListResponse.add(item.getTrack());
+                        }
+                        tracks.setValue(trackToTrackViewItemMapper.map(trackListResponse));
                     }
 
                     @Override

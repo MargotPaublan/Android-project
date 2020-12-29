@@ -13,7 +13,7 @@ public class PlayistResponse {
 
     // Object that contains the list of tracks, among other (useless) things
     @SerializedName("tracks")
-    TracksList tracksList;
+    Tracks tracks;
 
     public String getTitle() {
         return title;
@@ -31,12 +31,12 @@ public class PlayistResponse {
         this.description = description;
     }
 
-    public TracksList getTracksList() {
-        return tracksList;
+    public Tracks getTracks() {
+        return tracks;
     }
 
-    public void setTracksList(TracksList tracksList) {
-        this.tracksList = tracksList;
+    public void setTracks(Tracks tracks) {
+        this.tracks = tracks;
     }
 
     int totalItems;

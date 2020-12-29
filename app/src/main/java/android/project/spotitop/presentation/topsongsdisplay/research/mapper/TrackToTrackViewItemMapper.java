@@ -19,11 +19,15 @@ public class TrackToTrackViewItemMapper {
         //// track name
         trackViewItem.setTrackName(track.getTrackName());
 
+        //// track album name
+        trackViewItem.setAlbumName(track.getAlbum().getAlbumName());
+
         //// track artists
         List<String> artistsList = new ArrayList<String>();
         for (Artist artist : track.getArtists()) {
             artistsList.add(artist.getArtistName());
         }
+        trackViewItem.setArtists(artistsList);
 
         //// track duration
         trackViewItem.setTrackDuration(Integer.toString(track.getDurationMs()));
@@ -36,11 +40,7 @@ public class TrackToTrackViewItemMapper {
 
         bookViewItem.setFavorite(book.isFavorite());
 
-        if (book.getVolumeInfo().getAuthorList() == null) {
-            bookViewItem.setBookAuthors("vide");
-        } else {
-            bookViewItem.setBookAuthors(TextUtils.join(", ", book.getVolumeInfo().getAuthorList()));
-        }*/
+        */
 
         return trackViewItem;
     }

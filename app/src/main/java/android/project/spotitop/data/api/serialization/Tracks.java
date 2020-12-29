@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class TracksList {
+public class Tracks {
     // A list of tracks objects
-    @SerializedName("tracks")
-    List<Track> tracks;
+    @SerializedName("items")
+    List<Item> items;
 
-    public List<Track> getDailyTopTrack() {
-        return this.tracks;
+    public List<Item> getItems() {
+        return this.items;
     }
 }
