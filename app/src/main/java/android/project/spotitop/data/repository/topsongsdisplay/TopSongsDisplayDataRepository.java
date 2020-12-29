@@ -1,5 +1,6 @@
 package android.project.spotitop.data.repository.topsongsdisplay;
 
+import android.project.spotitop.data.api.serialization.AuthorizationResponse;
 import android.project.spotitop.data.api.serialization.PlayistResponse;
 import android.project.spotitop.data.api.serialization.Track;
 import android.project.spotitop.data.database.TrackEntity;
@@ -31,8 +32,13 @@ public class TopSongsDisplayDataRepository implements TopSongsDisplayRepository 
 
 
     @Override
-    public Single<PlayistResponse> getDailyTopPlayistResponse() {
-        return topSongsDisplayRemoteDataSource.getDailyTopPlayistResponse();
+    public Single<AuthorizationResponse> getAuthorizationToken() {
+        return topSongsDisplayRemoteDataSource.getAuthorizationResponse();
+    }
+
+    @Override
+    public Single<PlayistResponse> getDailyTopPlayistResponse(String tokenBearer) {
+        return topSongsDisplayRemoteDataSource.getDailyTopPlayistResponse(tokenBearer);
     }
 
     @Override
@@ -41,8 +47,8 @@ public class TopSongsDisplayDataRepository implements TopSongsDisplayRepository 
     }
 
     @Override
-    public Completable saveTrack(String id) {
-        Single<Track> track =  topSongsDisplayRemoteDataSource.getTrackDetails(id);
+    public Completable saveTrack(String id, String tokenBearer) {
+        Single<Track> track =  topSongsDisplayRemoteDataSource.getTrackDetails(id, tokenBearer);
         Single<TrackEntity> trackEntity = track.map(new Function<Track, TrackEntity>() {
             @Override
             public TrackEntity apply(Track track) throws Exception {

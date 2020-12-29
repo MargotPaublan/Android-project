@@ -3,6 +3,7 @@ package android.project.spotitop.presentation.topsongsdisplay.research.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHolder>{
+
     public static class TrackViewHolder extends RecyclerView.ViewHolder {
         private TextView titleTextView;
         private TextView authorsTextView;
@@ -26,7 +28,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
         private View v;
         private TrackViewItem trackViewItem;
         private TrackActionInterface trackActionInterface;
-        //private Switch favoriteSwitch;
+        private Button favoriteButton;
 
         public TrackViewHolder(View v, final TrackActionInterface trackActionInterface) {
             super(v);
@@ -36,18 +38,18 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             albumTextView = v.findViewById(R.id.track_album_textview);
             durationTextView = v.findViewById(R.id.track_duration_textview);
             iconImageView = v.findViewById(R.id.track_icon_imageview);
-            //favoriteSwitch = v.findViewById(R.id.favorite_switch);
+            favoriteButton = v.findViewById(R.id.track_button_favorite);
             this.trackActionInterface = trackActionInterface;
             setupListeners();
         }
 
         private void setupListeners() {
-            /*favoriteSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    bookActionInterface.onFavoriteToggle(bookViewItem.getBookId(), b);
+            favoriteButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    //todo : changer le 'true'
+                    trackActionInterface.onFavoriteButton(trackViewItem.getTrackId(), true);
                 }
-            });*/
+            });
         }
 
         void bind(final TrackViewItem trackViewItem) {
@@ -56,7 +58,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             authorsTextView.setText(trackViewItem.getArtistsToString());
             albumTextView.setText(trackViewItem.getAlbumName());
             durationTextView.setText(trackViewItem.getTrackDuration());
-            //favoriteSwitch.setChecked(trackViewItem.isFavorite());
+            //favoriteButton.setChecked(trackViewItem.isFavorite());
             Glide.with(v)
                     .load(trackViewItem.getAlbumImgUrl())
                     .centerCrop()

@@ -1,11 +1,13 @@
 package android.project.spotitop.presentation.topsongsdisplay.research.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.project.spotitop.data.di.FakeDependencyInjection;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackActionInterface;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackAdapter;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
 import android.project.spotitop.presentation.viewmodel.DailyTopTracksViewModel;
+import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -35,7 +38,7 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
     private TrackAdapter trackAdapter;
     private ProgressBar progressBar;
     private DailyTopTracksViewModel dailyTopTracksViewModel;
-    //private BookFavoriteViewModel bookFavoriteViewModel;
+    private TrackFavoriteViewModel trackFavoriteViewModel;
 
     private DailyTopFragment() {
     }
@@ -64,13 +67,14 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
 
     private void registerViewModels() {
         dailyTopTracksViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(DailyTopTracksViewModel.class);
-        //bookFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(BookFavoriteViewModel.class);
+        trackFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(TrackFavoriteViewModel.class);
         //System.out.println("FVVM is " + bookFavoriteViewModel);
 
+        //todo : book**
         dailyTopTracksViewModel.getTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackViewItem>>() {
             @Override
-            public void onChanged(List<TrackViewItem> trackViewItemList) {
-                trackAdapter.bindViewModels(trackViewItemList);
+            public void onChanged(List<TrackViewItem> trackItemViewModelList) {
+                trackAdapter.bindViewModels(trackItemViewModelList);
             }
         });
 
@@ -86,6 +90,7 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
     private void setupResearchView() {
         imageButtonSearchView = rootView.findViewById(R.id.button_search_view);
         imageButtonSearchView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             public void onClick(View v) {
                 dailyTopTracksViewModel.searchTopPlayist();
             }
@@ -99,15 +104,16 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    /*
+
+
     @Override
     public void onFavoriteButton(String trackId, boolean isFavorite) {
         //Handle add and deletion to favorites
         if (isFavorite) {
-            bookFavoriteViewModel.addBookToFavorite(bookId);
+            trackFavoriteViewModel.addTrackToFavorites(trackId);
         }
         else {
-            bookFavoriteViewModel.removeBookFromFavorite(bookId);
+            trackFavoriteViewModel.removeTrackFromFavorites(trackId);
         }
-    }*/
+    }
 }
