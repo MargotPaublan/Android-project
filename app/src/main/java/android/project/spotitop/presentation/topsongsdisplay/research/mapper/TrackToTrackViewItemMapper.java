@@ -1,5 +1,6 @@
 package android.project.spotitop.presentation.topsongsdisplay.research.mapper;
 
+import android.project.spotitop.data.api.serialization.AlbumImage;
 import android.project.spotitop.data.api.serialization.Artist;
 import android.project.spotitop.data.api.serialization.Track;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
@@ -32,11 +33,14 @@ public class TrackToTrackViewItemMapper {
         //// track duration
         trackViewItem.setTrackDuration(Integer.toString(track.getDurationMs()));
 
-        //todo : image mapping
-        /*
-        if (book.getVolumeInfo().getImageLinks() != null) {
-            bookViewItem.setIconUrl(book.getVolumeInfo().getImageLinks().getThumbnail());
+        //// track's album images
+        List<String> albumImagesUrls = new ArrayList<String>();
+        for (AlbumImage albumImage : track.getAlbum().getAlbumImages()) {
+            albumImagesUrls.add(albumImage.getImageURL());
         }
+        trackViewItem.setAlbumImgagesUrls(albumImagesUrls);
+
+        /*
 
         bookViewItem.setFavorite(book.isFavorite());
 

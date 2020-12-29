@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,12 +24,12 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
         private TextView titleTextView;
         private TextView authorsTextView;
         private TextView albumTextView;
-        private TextView durationTextView;
+        //private TextView durationTextView;
         private ImageView iconImageView;
         private View v;
         private TrackViewItem trackViewItem;
         private TrackActionInterface trackActionInterface;
-        private Button favoriteButton;
+        private ImageButton favoriteButton;
 
         public TrackViewHolder(View v, final TrackActionInterface trackActionInterface) {
             super(v);
@@ -36,7 +37,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             titleTextView = v.findViewById(R.id.track_title_textview);
             authorsTextView = v.findViewById(R.id.track_artists_textview);
             albumTextView = v.findViewById(R.id.track_album_textview);
-            durationTextView = v.findViewById(R.id.track_duration_textview);
+            //durationTextView = v.findViewById(R.id.track_duration_textview);
             iconImageView = v.findViewById(R.id.track_icon_imageview);
             favoriteButton = v.findViewById(R.id.track_button_favorite);
             this.trackActionInterface = trackActionInterface;
@@ -57,10 +58,10 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             titleTextView.setText(trackViewItem.getTrackName());
             authorsTextView.setText(trackViewItem.getArtistsToString());
             albumTextView.setText(trackViewItem.getAlbumName());
-            durationTextView.setText(trackViewItem.getTrackDuration());
+            //durationTextView.setText(trackViewItem.getTrackDuration());
             //favoriteButton.setChecked(trackViewItem.isFavorite());
             Glide.with(v)
-                    .load(trackViewItem.getAlbumImgUrl())
+                    .load(trackViewItem.getAnAlbumImgageUrl())
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .circleCrop()
