@@ -11,6 +11,8 @@ import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -26,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.project.spotitop.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
@@ -39,6 +42,7 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
     private ProgressBar progressBar;
     private DailyTopTracksViewModel dailyTopTracksViewModel;
     private TrackFavoriteViewModel trackFavoriteViewModel;
+    private List<TrackViewItem> trackItemViewModelList;
 
     private DailyTopFragment() {
     }
@@ -62,6 +66,28 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
         setupRecyclerView();
         progressBar = rootView.findViewById(R.id.progress_bar);
 
+        // Spinner setup
+        String[] nbOfTracks = { "3", "5", "10", "50"};
+        spinnerNbOfTracksView = rootView.findViewById(R.id.top_number_spinner);
+        spinnerNbOfTracksView.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, nbOfTracks));
+
+        spinnerNbOfTracksView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                int nbOfTracksToDisplay = Integer.parseInt(spinnerNbOfTracksView.getItemAtPosition(position).toString());
+
+                if (trackItemViewModelList != null) {
+                    List<TrackViewItem> sizedTrackViewModelList = trackItemViewModelList.subList(0, nbOfTracksToDisplay);
+                    trackAdapter.bindViewModels(sizedTrackViewModelList);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //do nothing
+            }
+        });
+        spinnerNbOfTracksView.setSelection(3);
         registerViewModels();
     }
 
@@ -73,8 +99,11 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
         //todo : book**
         dailyTopTracksViewModel.getTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackViewItem>>() {
             @Override
-            public void onChanged(List<TrackViewItem> trackItemViewModelList) {
-                trackAdapter.bindViewModels(trackItemViewModelList);
+            public void onChanged(List<TrackViewItem> trackItemViewModelListResults) {
+                trackItemViewModelList = trackItemViewModelListResults;
+                int nbOfTracksToDisplay = Integer.parseInt(spinnerNbOfTracksView.getSelectedItem().toString());
+                List<TrackViewItem> sizedTrackViewModelList = trackItemViewModelList.subList(0, nbOfTracksToDisplay);
+                trackAdapter.bindViewModels(sizedTrackViewModelList);
             }
         });
 
