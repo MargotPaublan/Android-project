@@ -25,7 +25,6 @@
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/display_grid_button_selector"
         android:layout_margin="5dp"
-        android:visibility="gone"
         />
 
     <ImageButton
@@ -36,6 +35,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:background="@drawable/display_list_button_selector"
         android:layout_margin="5dp"
+        android:visibility="gone"
         />
 
 

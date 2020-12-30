@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.project.spotitop.data.di.FakeDependencyInjection;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackActionInterface;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackAdapter;
+import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackGridAdapter;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
 import android.project.spotitop.presentation.viewmodel.DailyTopTracksViewModel;
 import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.project.spotitop.R;
@@ -37,8 +40,11 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
     private View rootView;
     private Spinner spinnerNbOfTracksView;
     private ImageButton imageButtonSearchView;
+    private ImageButton imageButtonGridView;
+    private ImageButton imageButtonListView;
     private RecyclerView recyclerView;
     private TrackAdapter trackAdapter;
+    private TrackGridAdapter trackGridAdapter;
     private ProgressBar progressBar;
     private DailyTopTracksViewModel dailyTopTracksViewModel;
     private TrackFavoriteViewModel trackFavoriteViewModel;
@@ -89,6 +95,31 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
         });
         spinnerNbOfTracksView.setSelection(3);
         registerViewModels();
+
+        Log.i("listclick1", "ok");
+        imageButtonGridView = rootView.findViewById(R.id.imagebutton_grid_view);
+        imageButtonGridView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                imageButtonGridView.setVisibility(v.GONE);
+                imageButtonListView.setVisibility(v.VISIBLE);
+                trackGridAdapter = new TrackGridAdapter(DailyTopFragment.this);
+                recyclerView.setAdapter(trackGridAdapter);
+                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            }
+        });
+
+        imageButtonListView = rootView.findViewById(R.id.imagebutton_list_view);
+        imageButtonListView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                imageButtonListView.setVisibility(v.GONE);
+                imageButtonGridView.setVisibility(v.VISIBLE);
+
+                trackAdapter = new TrackAdapter(DailyTopFragment.this);
+                recyclerView.setAdapter(trackAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            }
+        });
+
     }
 
     private void registerViewModels() {
