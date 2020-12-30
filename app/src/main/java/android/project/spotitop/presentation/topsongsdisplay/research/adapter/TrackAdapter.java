@@ -1,9 +1,10 @@
 package android.project.spotitop.presentation.topsongsdisplay.research.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.util.List;
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHolder>{
 
     public static class TrackViewHolder extends RecyclerView.ViewHolder {
+        private TextView rankTextView;
         private TextView titleTextView;
         private TextView authorsTextView;
         private TextView albumTextView;
@@ -34,6 +36,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
         public TrackViewHolder(View v, final TrackActionInterface trackActionInterface) {
             super(v);
             this.v = v;
+            rankTextView = v.findViewById(R.id.track_rank_textview);
             titleTextView = v.findViewById(R.id.track_title_textview);
             authorsTextView = v.findViewById(R.id.track_artists_textview);
             albumTextView = v.findViewById(R.id.track_album_textview);
@@ -46,22 +49,24 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
 
         private void setupListeners() {
             favoriteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
                 public void onClick(View v) {
-                    //todo : changer le 'true'
-                    trackActionInterface.onFavoriteButton(trackViewItem.getTrackId(), true);
+                    favoriteButton.setActivated(!favoriteButton.isActivated());
                 }
             });
+
         }
 
         void bind(final TrackViewItem trackViewItem) {
             this.trackViewItem = trackViewItem;
+            rankTextView.setText(trackViewItem.getRank());
             titleTextView.setText(trackViewItem.getTrackName());
             authorsTextView.setText(trackViewItem.getArtistsToString());
             albumTextView.setText(trackViewItem.getAlbumName());
             //durationTextView.setText(trackViewItem.getTrackDuration());
             //favoriteButton.setChecked(trackViewItem.isFavorite());
             Glide.with(v)
-                    .load(trackViewItem.getAnAlbumImgageUrl())
+                    .load(trackViewItem.getAnAlbumImageUrl())
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .circleCrop()

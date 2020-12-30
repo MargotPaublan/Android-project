@@ -8,7 +8,8 @@ public class TrackViewItem {
     private List<String> artists;
     private String albumName;
     private String trackDuration;
-    private List<String> albumImgagesUrls;
+    private List<String> albumImagesUrls;
+    private String rank;
 
     public String getTrackDuration() {
         return trackDuration;
@@ -60,15 +61,23 @@ public class TrackViewItem {
         this.albumName = albumName;
     }
 
-    public List<String> getAlbumImgagesUrls() {
-        return albumImgagesUrls;
+    public List<String> getAlbumImagesUrls() {
+        return albumImagesUrls;
     }
 
-    public String getAnAlbumImgageUrl() {
-        return albumImgagesUrls.get(0);
+    public String getAnAlbumImageUrl() {
+        return albumImagesUrls.get(0);
     }
 
-    public void setAlbumImgagesUrls(List<String> albumImgagesUrls) {
-        this.albumImgagesUrls = albumImgagesUrls;
+    public void setAlbumImagesUrls(List<String> albumImgagesUrls) {
+        this.albumImagesUrls = albumImgagesUrls;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank + ".";
     }
 }

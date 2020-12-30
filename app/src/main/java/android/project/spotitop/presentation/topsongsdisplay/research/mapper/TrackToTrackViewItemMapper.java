@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrackToTrackViewItemMapper {
-    private TrackViewItem map(Track track) {
+    private TrackViewItem map(Track track, String rank) {
         //Create new track view item
         TrackViewItem trackViewItem = new TrackViewItem();
 
@@ -38,7 +38,10 @@ public class TrackToTrackViewItemMapper {
         for (AlbumImage albumImage : track.getAlbum().getAlbumImages()) {
             albumImagesUrls.add(albumImage.getImageURL());
         }
-        trackViewItem.setAlbumImgagesUrls(albumImagesUrls);
+        trackViewItem.setAlbumImagesUrls(albumImagesUrls);
+
+        //// track rank
+        trackViewItem.setRank(rank);
 
         /*
 
@@ -51,8 +54,10 @@ public class TrackToTrackViewItemMapper {
 
     public List<TrackViewItem> map(List<Track> tracksList) {
         List<TrackViewItem> trackViewItemList = new ArrayList<>();
+        Integer index = 1;
         for (Track track : tracksList) {
-            trackViewItemList.add(map(track));
+            trackViewItemList.add(map(track, index.toString()));
+            index++;
         }
         return trackViewItemList;
     }

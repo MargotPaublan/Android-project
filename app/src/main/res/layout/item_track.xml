@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginTop="14dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     app:cardCornerRadius="5dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="#eb4034">
+    app:cardBackgroundColor="#262626">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,13 +19,26 @@
         android:background="#262626"
         >
 
+        <!-- Track rank TextView -->
+        <TextView
+            android:id="@+id/track_rank_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textColor="#e6e9ed"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:text="Track rank" />
+
         <!-- Album track ImageView -->
         <ImageView
             android:id="@+id/track_icon_imageview"
             android:layout_width="50dp"
             android:layout_height="50dp"
-
-            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintLeft_toRightOf="@+id/track_rank_textview"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_action_refresh1"/>
 
@@ -70,10 +85,9 @@
             android:id="@+id/track_button_favorite"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/favorite_button_selector"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="@null"
+            android:background = "@drawable/favorite_button_selector"
             />
 
 
