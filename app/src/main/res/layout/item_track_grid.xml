@@ -4,24 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="200dp"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
     app:cardCornerRadius="5dp"
+    android:layout_margin="10dp"
     app:cardBackgroundColor="#262626">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="10dp"
+        android:padding="15dp"
         android:background="#262626"
         >
 
         <!-- Album track ImageView -->
         <ImageView
             android:id="@+id/track_icon_imageview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Track rank TextView -->
@@ -41,37 +41,44 @@
         <!-- Track title TextView -->
         <TextView
             android:id="@+id/track_title_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="#e6e9ed"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/track_icon_imageview"
             app:layout_constraintLeft_toRightOf="@id/track_rank_textview"
+            app:layout_constraintBottom_toBottomOf="@id/track_rank_textview"
             android:layout_marginLeft="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             tools:text="Track title" />
 
         <!-- Track artists TextView -->
         <TextView
             android:id="@+id/track_artists_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="#e6e9ed"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/track_rank_textview"
-            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:ellipsize="end"
+            android:singleLine="true"
             tools:text="Track artists" />
 
         <!-- Album name TextView -->
         <TextView
             android:id="@+id/track_album_textview"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textSize="10sp"
             android:textColor="#e6e9ed"
             app:layout_constraintTop_toBottomOf="@+id/track_artists_textview"
-            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:ellipsize="end"
+            android:singleLine="true"
             tools:text="Track album" />
 
 

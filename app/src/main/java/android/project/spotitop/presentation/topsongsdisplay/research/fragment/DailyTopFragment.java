@@ -11,6 +11,7 @@ import android.project.spotitop.presentation.viewmodel.DailyTopTracksViewModel;
 import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -44,7 +45,6 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
     private ImageButton imageButtonListView;
     private RecyclerView recyclerView;
     private TrackAdapter trackAdapter;
-    private TrackGridAdapter trackGridAdapter;
     private ProgressBar progressBar;
     private DailyTopTracksViewModel dailyTopTracksViewModel;
     private TrackFavoriteViewModel trackFavoriteViewModel;
@@ -96,15 +96,15 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
         spinnerNbOfTracksView.setSelection(3);
         registerViewModels();
 
-        Log.i("listclick1", "ok");
+
         imageButtonGridView = rootView.findViewById(R.id.imagebutton_grid_view);
         imageButtonGridView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 imageButtonGridView.setVisibility(v.GONE);
                 imageButtonListView.setVisibility(v.VISIBLE);
-                trackGridAdapter = new TrackGridAdapter(DailyTopFragment.this);
-                recyclerView.setAdapter(trackGridAdapter);
-                recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+                boolean isSwitched = trackAdapter.toggleItemViewType();
+                recyclerView.setLayoutManager(isSwitched ? new LinearLayoutManager(getContext()) : new GridLayoutManager(getContext(), 2));
             }
         });
 
@@ -113,14 +113,13 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
             public void onClick(View v) {
                 imageButtonListView.setVisibility(v.GONE);
                 imageButtonGridView.setVisibility(v.VISIBLE);
-
-                trackAdapter = new TrackAdapter(DailyTopFragment.this);
-                recyclerView.setAdapter(trackAdapter);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                boolean isSwitched = trackAdapter.toggleItemViewType();
+                recyclerView.setLayoutManager(isSwitched ? new LinearLayoutManager(getContext()) : new GridLayoutManager(getContext(), 2));
             }
         });
 
     }
+
 
     private void registerViewModels() {
         dailyTopTracksViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(DailyTopTracksViewModel.class);
@@ -159,9 +158,16 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
 
     private void setupRecyclerView() {
         recyclerView = rootView.findViewById(R.id.recycler_view);
+
         trackAdapter = new TrackAdapter(this);
         recyclerView.setAdapter(trackAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        //if (trackAdapter.getViewType() == 0) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        /*}
+        else {
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        }*/
     }
 
 

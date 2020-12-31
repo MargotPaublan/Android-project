@@ -1,8 +1,6 @@
 package android.project.spotitop.presentation.topsongsdisplay.research.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -20,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHolder>{
+    public static final int LIST_VIEW = 0;
+    public static final int GRID_VIEW = 1;
+    boolean isSwitchView = true;
 
     public static class TrackViewHolder extends RecyclerView.ViewHolder {
         private TextView rankTextView;
@@ -75,6 +76,9 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
 
     }
 
+
+
+
     private List<TrackViewItem> trackViewItemList;
     private TrackActionInterface trackActionInterface;
 
@@ -94,17 +98,40 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
     @Override
     public TrackViewHolder onCreateViewHolder(ViewGroup parent,
                                               int viewType) {
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_track, parent, false);
-        TrackViewHolder trackViewHolder = new TrackViewHolder(v, trackActionInterface);
+        View v;
+        TrackViewHolder trackViewHolder = null;
+
+        if (viewType == LIST_VIEW) {
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_track, parent, false);
+        }
+        else {
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_track_grid, parent, false);
+        }
+
+        trackViewHolder = new TrackViewHolder(v, trackActionInterface);
         return trackViewHolder;
     }
+
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(TrackViewHolder holder, int position) {
         holder.bind(trackViewItemList.get(position));
+    }
+
+
+    @Override
+    public int getItemViewType (int position) {
+        if (isSwitchView){
+            return LIST_VIEW;
+        }else{
+            return GRID_VIEW;
+        }
+    }
+
+    public boolean toggleItemViewType () {
+        isSwitchView = !isSwitchView;
+        return isSwitchView;
     }
 
 
