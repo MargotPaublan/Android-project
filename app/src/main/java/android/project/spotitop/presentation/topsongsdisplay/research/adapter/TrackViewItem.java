@@ -1,22 +1,25 @@
 package android.project.spotitop.presentation.topsongsdisplay.research.adapter;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TrackViewItem {
+public class TrackViewItem implements Serializable {
     private String trackId;
     private String trackName;
     private List<String> artists;
     private String albumName;
-    private String trackDuration;
+    private String trackDurationMs;
+    private String trackDurationReadable;
+    private String albumReleaseDate;
     private List<String> albumImagesUrls;
     private String rank;
 
-    public String getTrackDuration() {
-        return trackDuration;
+    public String getTrackDurationMs() {
+        return trackDurationMs;
     }
 
-    public void setTrackDuration(String trackDuration) {
-        this.trackDuration = trackDuration;
+    public void setTrackDurationMs(String trackDurationMs) {
+        this.trackDurationMs = trackDurationMs;
     }
 
 
@@ -65,8 +68,12 @@ public class TrackViewItem {
         return albumImagesUrls;
     }
 
-    public String getAnAlbumImageUrl() {
+    public String getFirstAlbumImageUrl() {
         return albumImagesUrls.get(0);
+    }
+
+    public String getSecondAlbumImageUrl() {
+        return albumImagesUrls.get(1);
     }
 
     public void setAlbumImagesUrls(List<String> albumImgagesUrls) {
@@ -78,6 +85,22 @@ public class TrackViewItem {
     }
 
     public void setRank(String rank) {
-        this.rank = rank + ".";
+        this.rank = rank;
+    }
+
+    public String getAlbumReleaseDate() {
+        return albumReleaseDate;
+    }
+
+    public void setAlbumReleaseDate(String albumReleaseDate) {
+        this.albumReleaseDate = albumReleaseDate;
+    }
+
+    public String getTrackDurationReadable() {
+        return trackDurationReadable;
+    }
+
+    public void setTrackDurationReadable(String trackDurationReadable) {
+        this.trackDurationReadable = trackDurationReadable;
     }
 }

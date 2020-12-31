@@ -1,22 +1,21 @@
 package android.project.spotitop.presentation.topsongsdisplay.research.fragment;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.project.spotitop.data.di.FakeDependencyInjection;
+import android.project.spotitop.presentation.topsongsdisplay.DisplaySelectedTrackDetailsActivity;
+import android.project.spotitop.presentation.topsongsdisplay.research.adapter.RecyclerViewClickListener;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackActionInterface;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackAdapter;
-import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackGridAdapter;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
 import android.project.spotitop.presentation.viewmodel.DailyTopTracksViewModel;
 import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -32,11 +31,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.project.spotitop.R;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
-public class DailyTopFragment extends Fragment implements TrackActionInterface {
+public class DailyTopFragment extends Fragment implements TrackActionInterface, RecyclerViewClickListener {
     public static final String TAB_NAME = "Daily top tracks";
     private View rootView;
     private Spinner spinnerNbOfTracksView;
@@ -135,6 +132,7 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
                 List<TrackViewItem> sizedTrackViewModelList = trackItemViewModelList.subList(0, nbOfTracksToDisplay);
                 trackAdapter.bindViewModels(sizedTrackViewModelList);
             }
+
         });
 
         dailyTopTracksViewModel.getIsDataLoading().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
@@ -159,7 +157,7 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
     private void setupRecyclerView() {
         recyclerView = rootView.findViewById(R.id.recycler_view);
 
-        trackAdapter = new TrackAdapter(this);
+        trackAdapter = new TrackAdapter(this, this);
         recyclerView.setAdapter(trackAdapter);
 
         //if (trackAdapter.getViewType() == 0) {
@@ -181,5 +179,13 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface {
         else {
             trackFavoriteViewModel.removeTrackFromFavorites(trackId);
         }
+    }
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        TrackViewItem trackViewItem = trackItemViewModelList.get(position);
+        Intent intent = new Intent(this.getContext(), DisplaySelectedTrackDetailsActivity.class);
+        intent.putExtra("TrackViewItem", trackViewItem);
+        startActivity(intent);
     }
 }

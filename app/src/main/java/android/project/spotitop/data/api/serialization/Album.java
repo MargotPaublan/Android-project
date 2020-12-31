@@ -13,11 +13,19 @@ public class Album {
     @SerializedName("name")
     String albumName;
 
+    // Album releaseDate
+    @SerializedName("release_date")
+    String releaseDate;
+
     public String getAlbumName() {
         return albumName;
     }
 
     public List<AlbumImage> getAlbumImages() {
         return albumImages;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
     }
 }

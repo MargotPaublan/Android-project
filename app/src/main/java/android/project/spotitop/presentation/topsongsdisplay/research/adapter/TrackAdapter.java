@@ -22,7 +22,9 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
     public static final int GRID_VIEW = 1;
     boolean isSwitchView = true;
 
-    public static class TrackViewHolder extends RecyclerView.ViewHolder {
+    private static RecyclerViewClickListener itemListener;
+
+    public static class TrackViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView rankTextView;
         private TextView titleTextView;
         private TextView authorsTextView;
@@ -46,6 +48,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             favoriteButton = v.findViewById(R.id.track_button_favorite);
             this.trackActionInterface = trackActionInterface;
             setupListeners();
+            this.v.setOnClickListener(this);
         }
 
         private void setupListeners() {
@@ -60,20 +63,24 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
 
         void bind(final TrackViewItem trackViewItem) {
             this.trackViewItem = trackViewItem;
-            rankTextView.setText(trackViewItem.getRank());
+            rankTextView.setText(trackViewItem.getRank() + ".");
             titleTextView.setText(trackViewItem.getTrackName());
             authorsTextView.setText(trackViewItem.getArtistsToString());
             albumTextView.setText(trackViewItem.getAlbumName());
             //durationTextView.setText(trackViewItem.getTrackDuration());
             //favoriteButton.setChecked(trackViewItem.isFavorite());
             Glide.with(v)
-                    .load(trackViewItem.getAnAlbumImageUrl())
+                    .load(trackViewItem.getFirstAlbumImageUrl())
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .circleCrop()
                     .into(iconImageView);
         }
 
+        @Override
+        public void onClick(View view) {
+            itemListener.recyclerViewListClicked(v, this.getLayoutPosition());
+        }
     }
 
 
@@ -83,9 +90,10 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
     private TrackActionInterface trackActionInterface;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TrackAdapter(TrackActionInterface trackActionInterface) {
+    public TrackAdapter(TrackActionInterface trackActionInterface, RecyclerViewClickListener itemListener) {
         trackViewItemList = new ArrayList<>();
         this.trackActionInterface = trackActionInterface;
+        this.itemListener = itemListener;
     }
 
     public void bindViewModels(List<TrackViewItem> trackViewItemList) {

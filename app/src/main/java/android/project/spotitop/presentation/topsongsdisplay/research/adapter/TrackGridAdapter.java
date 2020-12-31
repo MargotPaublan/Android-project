@@ -62,7 +62,7 @@ public class TrackGridAdapter extends RecyclerView.Adapter<TrackGridAdapter.Trac
             //durationTextView.setText(trackViewItem.getTrackDuration());
             //favoriteButton.setChecked(trackViewItem.isFavorite());
             Glide.with(v)
-                    .load(trackViewItem.getAnAlbumImageUrl())
+                    .load(trackViewItem.getFirstAlbumImageUrl())
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .circleCrop()

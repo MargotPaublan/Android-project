@@ -31,7 +31,14 @@ public class TrackToTrackViewItemMapper {
         trackViewItem.setArtists(artistsList);
 
         //// track duration
-        trackViewItem.setTrackDuration(Integer.toString(track.getDurationMs()));
+        //trackViewItem.setTrackDurationMs(Integer.toString(track.getDurationMs()));
+
+        //// track readable duration
+        trackViewItem.setTrackDurationReadable(this.readableTrackDurationFromMs(track.getDurationMs()));
+
+        //// track readable duration
+        trackViewItem.setAlbumReleaseDate(track.getAlbum().getReleaseDate());
+
 
         //// track's album images
         List<String> albumImagesUrls = new ArrayList<String>();
@@ -60,5 +67,12 @@ public class TrackToTrackViewItemMapper {
             index++;
         }
         return trackViewItemList;
+    }
+
+    public String readableTrackDurationFromMs(int durationMs) {
+        int durationInSec = durationMs/1000;
+        int nbOfMinutes = durationInSec/60;
+        int nbOfSec = durationInSec%60;
+        return Integer.toString(nbOfMinutes) + ":" + Integer.toString(nbOfSec);
     }
 }
