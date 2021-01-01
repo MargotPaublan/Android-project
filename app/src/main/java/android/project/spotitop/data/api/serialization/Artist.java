@@ -2,6 +2,9 @@ package android.project.spotitop.data.api.serialization;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Represents an artist of a track
+ */
 public class Artist {
     //Artist name
     @SerializedName("name")

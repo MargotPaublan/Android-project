@@ -4,67 +4,76 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
-
+/**
+ * Entity of the topSongTable, with some informations about a track
+ */
 @Entity(tableName = "topSongsTable")
 public class TrackEntity {
     @NonNull
     @PrimaryKey
-    public String id;
-
-    public String title;
-    public String album;
-    public String artists;
-    public String rank;
-    public String iconUrl;
+    public String trackId;
+    public String trackName;
+    public String trackAlbum;
+    public String trackArtists;
+    public String trackDuration;
+    public String trackReleaseDate;
+    public String trackIconUrl;
 
 
     @NonNull
-    public String getId() {
-        return id;
+    public String getTrackId() {
+        return trackId;
     }
 
-    public void setId(@NonNull String id) {
-        this.id = id;
+    public void setTrackId(@NonNull String trackId) {
+        this.trackId = trackId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTrackName() {
+        return trackName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTrackName(String trackName) {
+        this.trackName = trackName;
     }
 
-    public String getAlbum() {
-        return album;
+    public String getTrackAlbum() {
+        return trackAlbum;
     }
 
-    public void setAlbum(String album) {
-        this.album = album;
+    public void setTrackAlbum(String trackAlbum) {
+        this.trackAlbum = trackAlbum;
     }
 
-    public String getArtists() {
-        return artists;
+    public String getTrackArtists() {
+        return trackArtists;
     }
 
-    public void setArtists(String artists) {
-        this.artists = artists;
+    public void setTrackArtists(String trackArtists) {
+        this.trackArtists = trackArtists;
     }
 
-    public String getRank() {
-        return rank;
+    public String getTrackDuration() {
+        return trackDuration;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public void setTrackDuration(String trackDuration) {
+        this.trackDuration = trackDuration;
     }
 
-    public String getIconUrl() {
-        return iconUrl;
+    public String getTrackReleaseDate() {
+        return trackReleaseDate;
     }
 
-    public void setIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
+    public void setTrackReleaseDate(String trackReleaseDate) {
+        this.trackReleaseDate = trackReleaseDate;
+    }
+
+    public String getTrackIconUrl() {
+        return trackIconUrl;
+    }
+
+    public void setTrackIconUrl(String trackIconUrl) {
+        this.trackIconUrl = trackIconUrl;
     }
 }

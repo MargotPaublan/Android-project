@@ -2,9 +2,8 @@ package android.project.spotitop.presentation.viewmodel;
 
 import android.project.spotitop.data.database.TrackEntity;
 import android.project.spotitop.data.repository.topsongsdisplay.TopSongsDisplayRepository;
-import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackViewItem;
-import android.project.spotitop.presentation.topsongsdisplay.favorite.mapper.TrackEntityToDetailViewModelMapper;
-import android.util.Log;
+import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackFavoriteViewItem;
+import android.project.spotitop.presentation.topsongsdisplay.favorite.mapper.TrackEntityToTrackFavoriteViewItemMapper;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -21,15 +20,15 @@ import io.reactivex.subscribers.ResourceSubscriber;
 public class TrackFavoriteViewModel extends ViewModel {
     private TopSongsDisplayRepository topSongsDisplayRepository;
     private CompositeDisposable compositeDisposable;
-    private TrackEntityToDetailViewModelMapper trackEntityToDetailViewModelMapper;
+    private TrackEntityToTrackFavoriteViewItemMapper trackEntityToTrackFavoriteViewItemMapper;
 
     public TrackFavoriteViewModel(TopSongsDisplayRepository topSongsDisplayRepository) {
         this.topSongsDisplayRepository = topSongsDisplayRepository;
         this.compositeDisposable = new CompositeDisposable();
-        this.trackEntityToDetailViewModelMapper = new TrackEntityToDetailViewModelMapper();
+        this.trackEntityToTrackFavoriteViewItemMapper = new TrackEntityToTrackFavoriteViewItemMapper();
     }
 
-    private MutableLiveData<List<TrackViewItem>> favoriteTracks;
+    private MutableLiveData<List<TrackFavoriteViewItem>> favoriteTracks;
     private MutableLiveData<Boolean> isDataLoading = new MutableLiveData<Boolean>();
     final MutableLiveData<Event<String>> trackAddedEvent = new MutableLiveData<>();
     final MutableLiveData<Event<String>> trackDeletedEvent = new MutableLiveData<>();
@@ -39,7 +38,7 @@ public class TrackFavoriteViewModel extends ViewModel {
     }
 
     //TODO : handle loader
-    public  MutableLiveData<List<TrackViewItem>> getFavoriteTracks() {
+    public  MutableLiveData<List<TrackFavoriteViewItem>> getFavoriteTracks() {
         isDataLoading.setValue(true);
 
         // If favoriteBooks is empty
@@ -53,7 +52,7 @@ public class TrackFavoriteViewModel extends ViewModel {
                         @Override
                         public void onNext(List<TrackEntity> trackEntities) {
                             isDataLoading.setValue(false);
-                            favoriteTracks.setValue(trackEntityToDetailViewModelMapper.map(trackEntities));
+                            favoriteTracks.setValue(trackEntityToTrackFavoriteViewItemMapper.map(trackEntities));
                         }
 
                         @Override
@@ -84,7 +83,7 @@ public class TrackFavoriteViewModel extends ViewModel {
 
     // todo : changer tokenBearer
     public void addTrackToFavorites(final String trackId){
-        compositeDisposable.add(topSongsDisplayRepository.saveTrack(trackId, "Bearer BQArI1HsaVHIpFX3VLAb47_nXqG_Wf3ftztW67cMqJSaSsKxfW_1QpuENeEUaYTuu7RycJ4P_AUJNhpUMv0")
+        compositeDisposable.add(topSongsDisplayRepository.saveTrack(trackId, "Bearer BQB2VmRjOyRXF_gE7vVs40RB9VHMYS60elDAXYqBIMlaN9XBwIFNtTEV93_O8X7KZN0qnX5JYFptteykBBc")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableCompletableObserver() {

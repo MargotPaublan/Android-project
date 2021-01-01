@@ -1,27 +1,16 @@
 package android.project.spotitop.presentation.topsongsdisplay.research.adapter;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class TrackViewItem implements Serializable {
     private String trackId;
     private String trackName;
-    private List<String> artists;
-    private String albumName;
-    private String trackDurationMs;
-    private String trackDurationReadable;
-    private String albumReleaseDate;
-    private List<String> albumImagesUrls;
-    private String rank;
-
-    public String getTrackDurationMs() {
-        return trackDurationMs;
-    }
-
-    public void setTrackDurationMs(String trackDurationMs) {
-        this.trackDurationMs = trackDurationMs;
-    }
-
+    private String trackAlbum;
+    private String trackArtists;
+    private String trackImageUrl;
+    private String trackRank;
+    private String trackDuration;
+    private String trackReleaseDate;
 
 
     public String getTrackId() {
@@ -40,67 +29,51 @@ public class TrackViewItem implements Serializable {
         this.trackName = trackName;
     }
 
-    public List<String> getArtists() {
-        return artists;
+    public String getTrackAlbum() {
+        return trackAlbum;
     }
 
-    public String getArtistsToString() {
-        String res = "";
-        for (String artist : artists) {
-            res += artist + " - ";
-        }
-        return res.substring(0, res.length()-3);
+    public void setTrackAlbum(String trackAlbum) {
+        this.trackAlbum = trackAlbum;
     }
 
-    public void setArtists(List<String> artists) {
-        this.artists = artists;
+    public String getTrackArtists() {
+        return trackArtists;
     }
 
-    public String getAlbumName() {
-        return albumName;
+    public void setTrackArtists(String trackArtists) {
+        this.trackArtists = trackArtists;
     }
 
-    public void setAlbumName(String albumName) {
-        this.albumName = albumName;
+    public String getTrackImageUrl() {
+        return trackImageUrl;
     }
 
-    public List<String> getAlbumImagesUrls() {
-        return albumImagesUrls;
+    public void setTrackImageUrl(String trackImageUrl) {
+        this.trackImageUrl = trackImageUrl;
     }
 
-    public String getFirstAlbumImageUrl() {
-        return albumImagesUrls.get(0);
+    public String getTrackRank() {
+        return trackRank;
     }
 
-    public String getSecondAlbumImageUrl() {
-        return albumImagesUrls.get(1);
+    public void setTrackRank(String trackRank) {
+        this.trackRank = trackRank;
     }
 
-    public void setAlbumImagesUrls(List<String> albumImgagesUrls) {
-        this.albumImagesUrls = albumImgagesUrls;
+    public String getTrackDuration() {
+        return trackDuration;
     }
 
-    public String getRank() {
-        return rank;
+    public void setTrackDuration(String trackDuration) {
+        this.trackDuration = trackDuration;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public String getTrackReleaseDate() {
+        return trackReleaseDate;
     }
 
-    public String getAlbumReleaseDate() {
-        return albumReleaseDate;
-    }
-
-    public void setAlbumReleaseDate(String albumReleaseDate) {
-        this.albumReleaseDate = albumReleaseDate;
-    }
-
-    public String getTrackDurationReadable() {
-        return trackDurationReadable;
-    }
-
-    public void setTrackDurationReadable(String trackDurationReadable) {
-        this.trackDurationReadable = trackDurationReadable;
+    public void setTrackReleaseDate(String trackReleaseDate) {
+        this.trackReleaseDate = trackReleaseDate;
     }
 }

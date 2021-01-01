@@ -1,13 +1,12 @@
 package android.project.spotitop.data.repository.topsongsdisplay;
 
 import android.project.spotitop.data.api.serialization.AuthorizationResponse;
-import android.project.spotitop.data.api.serialization.PlayistResponse;
+import android.project.spotitop.data.api.serialization.TopTracksResponse;
 import android.project.spotitop.data.api.serialization.Track;
 import android.project.spotitop.data.database.TrackEntity;
 import android.project.spotitop.data.repository.topsongsdisplay.local.TopSongsDisplayLocalDataSource;
 import android.project.spotitop.data.repository.topsongsdisplay.mapper.TrackToTrackEntityMapper;
 import android.project.spotitop.data.repository.topsongsdisplay.remote.TopSongsDisplayRemoteDataSource;
-import android.util.Log;
 
 import java.util.List;
 
@@ -38,13 +37,13 @@ public class TopSongsDisplayDataRepository implements TopSongsDisplayRepository 
     }
 
     @Override
-    public Single<PlayistResponse> getDailyTopPlayistResponse(String tokenBearer) {
+    public Single<TopTracksResponse> getDailyTopPlayistResponse(String tokenBearer) {
         return topSongsDisplayRemoteDataSource.getDailyTopPlayistResponse(tokenBearer);
     }
 
     @Override
     public Flowable<List<TrackEntity>> getSavedTracks() {
-        return topSongsDisplayLocalDataSource.getSavedTracks();
+        return topSongsDisplayLocalDataSource.getFavoriteSavedTracks();
     }
 
     @Override
@@ -62,7 +61,7 @@ public class TopSongsDisplayDataRepository implements TopSongsDisplayRepository 
         Completable trackEntityResult = trackEntity.flatMapCompletable(new Function<TrackEntity, CompletableSource>() {
             @Override
             public CompletableSource apply(TrackEntity trackEntity) throws Exception {
-                return topSongsDisplayLocalDataSource.saveTrack(trackEntity);
+                return topSongsDisplayLocalDataSource.saveFavoriteTrackIntoDatabase(trackEntity);
             }
         });
         return trackEntityResult;
@@ -72,6 +71,6 @@ public class TopSongsDisplayDataRepository implements TopSongsDisplayRepository 
 
     @Override
     public Completable removeTrackFromDB(String id) {
-        return topSongsDisplayLocalDataSource.deleteTrack(id);
+        return topSongsDisplayLocalDataSource.deleteFavoriteTrackFromDatabase(id);
     }
 }

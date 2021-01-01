@@ -3,15 +3,12 @@ package android.project.spotitop.presentation.topsongsdisplay;
 import android.os.Bundle;
 import android.project.spotitop.R;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -41,18 +38,18 @@ public class DisplaySelectedTrackDetailsActivity extends AppCompatActivity {
 
 
         titleTextView.setText(trackViewItem.getTrackName());
-        artistsTextView.setText("Artist(s) : " + trackViewItem.getArtistsToString());
-        albumTextView.setText("Album : " +  trackViewItem.getAlbumName());
-        rankTextView.setText("Rank : " + trackViewItem.getRank());
-        durationMsTextView.setText("Duration : " + trackViewItem.getTrackDurationReadable());
-        releaseDateTextView.setText("Release date : " + trackViewItem.getAlbumReleaseDate());
-
-
-
+        artistsTextView.setText("Artist(s) : " + trackViewItem.getTrackArtists());
+        albumTextView.setText("Album : " +  trackViewItem.getTrackAlbum());
+        rankTextView.setText("Rank : " + trackViewItem.getTrackRank());
+        durationMsTextView.setText("Duration : " + trackViewItem.getTrackDuration());
+        releaseDateTextView.setText("Release date : " + trackViewItem.getTrackReleaseDate());
         Glide.with(this.getApplicationContext())
-                .load(trackViewItem.getFirstAlbumImageUrl())
+                .load(trackViewItem.getTrackImageUrl())
+                .centerCrop()
                 .transition(DrawableTransitionOptions.withCrossFade())
+                .circleCrop()
                 .into(iconImageView);
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

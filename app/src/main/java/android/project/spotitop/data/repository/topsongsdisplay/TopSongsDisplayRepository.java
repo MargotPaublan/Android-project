@@ -1,7 +1,7 @@
 package android.project.spotitop.data.repository.topsongsdisplay;
 
 import android.project.spotitop.data.api.serialization.AuthorizationResponse;
-import android.project.spotitop.data.api.serialization.PlayistResponse;
+import android.project.spotitop.data.api.serialization.TopTracksResponse;
 import android.project.spotitop.data.database.TrackEntity;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import io.reactivex.Single;
 public interface TopSongsDisplayRepository {
     Single<AuthorizationResponse> getAuthorizationToken();
 
-    Single<PlayistResponse> getDailyTopPlayistResponse(String tokenBearer);
+    Single<TopTracksResponse> getDailyTopPlayistResponse(String tokenBearer);
 
     Flowable<List<TrackEntity>> getSavedTracks();
 

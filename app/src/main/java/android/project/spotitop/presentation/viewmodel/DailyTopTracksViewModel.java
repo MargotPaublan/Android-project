@@ -3,7 +3,7 @@ package android.project.spotitop.presentation.viewmodel;
 import android.os.Build;
 import android.project.spotitop.data.api.serialization.AuthorizationResponse;
 import android.project.spotitop.data.api.serialization.Item;
-import android.project.spotitop.data.api.serialization.PlayistResponse;
+import android.project.spotitop.data.api.serialization.TopTracksResponse;
 import android.project.spotitop.data.api.serialization.Track;
 import android.project.spotitop.data.repository.topsongsdisplay.TopSongsDisplayRepository;
 import android.project.spotitop.data.repository.topsongsdisplay.remote.AuthorizationToken;
@@ -88,14 +88,14 @@ public class DailyTopTracksViewModel extends ViewModel {
         compositeDisposable.add(topSongsDisplayRepository.getDailyTopPlayistResponse(authorizationToken.getTokenAuthorization())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<PlayistResponse>() {
+                .subscribeWith(new DisposableSingleObserver<TopTracksResponse>() {
 
                     @Override
-                    public void onSuccess(PlayistResponse playistResponse) {
+                    public void onSuccess(TopTracksResponse topTracksResponse) {
                         isDataLoading.setValue(false);
 
                         List<Track> trackListResponse = new ArrayList<>();
-                        for (Item item : playistResponse.getTracks().getItems()) {
+                        for (Item item : topTracksResponse.getListOfTracks().getItems()) {
                             trackListResponse.add(item.getTrack());
                         }
                         tracks.setValue(trackToTrackViewItemMapper.map(trackListResponse));

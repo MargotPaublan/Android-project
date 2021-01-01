@@ -64,14 +64,14 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
 
         void bind(final TrackViewItem trackViewItem) {
             this.trackViewItem = trackViewItem;
-            rankTextView.setText(trackViewItem.getRank() + ".");
+            rankTextView.setText(trackViewItem.getTrackRank() + ".");
             titleTextView.setText(trackViewItem.getTrackName());
-            authorsTextView.setText(trackViewItem.getArtistsToString());
-            albumTextView.setText(trackViewItem.getAlbumName());
+            authorsTextView.setText(trackViewItem.getTrackArtists());
+            albumTextView.setText(trackViewItem.getTrackAlbum());
             //durationTextView.setText(trackViewItem.getTrackDuration());
             //favoriteButton.setChecked(trackViewItem.isFavorite());
             Glide.with(v)
-                    .load(trackViewItem.getFirstAlbumImageUrl())
+                    .load(trackViewItem.getTrackImageUrl())
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .circleCrop()

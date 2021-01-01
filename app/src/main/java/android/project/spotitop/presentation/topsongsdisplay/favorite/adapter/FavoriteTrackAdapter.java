@@ -4,7 +4,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +28,7 @@ public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdap
         private TextView releaseDateTextView;
         private ImageView iconImageView;
         private View v;
-        private TrackViewItem trackDetailsViewItem;
+        private TrackFavoriteViewItem trackDetailsViewItem;
         private FavoriteTrackActionInterface favoriteTrackActionInterface;
         private ImageButton favoriteButton;
 
@@ -56,38 +55,27 @@ public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdap
             });
         }
 
-        void bind(TrackViewItem trackViewItem) {
-            this.trackDetailsViewItem = trackViewItem;
-            Log.i("tracktitle1", trackViewItem.getTrackAlbum());
-            titleTextView.setText(trackViewItem.getTrackTitle());
-            //artistsTextView.setText(trackViewItem.getTrackArtists());
-            //rankTextView.setText(trackViewItem.getRank());
-            albumTextView.setText(trackViewItem.getTrackAlbum());
-            //durationTextView.setText(trackViewItem.getTrackDuration());
-
-
-            //artistsTextView.setText("test");
-            //albumTextView.setText("test");
-
-            /*favoriteButton.setChecked(true);
-            if (trackDetailViewItem.getBookDescription() == null) {
-                durationTextView.setVisibility(View.GONE);
-            } else {
-                durationTextView.setVisibility(View.VISIBLE);
-            }*/
-
+        void bind(TrackFavoriteViewItem trackFavoriteViewItem) {
+            this.trackDetailsViewItem = trackFavoriteViewItem;
+            Log.i("tracktitle1", trackFavoriteViewItem.getTrackAlbum());
+            titleTextView.setText(trackFavoriteViewItem.getTrackName());
+            artistsTextView.setText(trackFavoriteViewItem.getTrackArtists());
+            albumTextView.setText(trackFavoriteViewItem.getTrackAlbum());
+            durationTextView.setText("Duration : " + trackFavoriteViewItem.getTrackDuration());
+            releaseDateTextView.setText(" Release date : " + trackFavoriteViewItem.getTrackReleaseDate());
 
             Glide.with(v)
-                    .load(trackViewItem.getIconUrl())
+                    .load(trackFavoriteViewItem.getTrackIconUrl())
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
+                    .circleCrop()
                     .into(iconImageView);
 
         }
 
     }
 
-    private List<TrackViewItem> trackDetailsViewItemList;
+    private List<TrackFavoriteViewItem> trackDetailsViewItemList;
     private FavoriteTrackActionInterface favoriteTrackActionInterface;
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -96,7 +84,7 @@ public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdap
         this.favoriteTrackActionInterface = favoriteTrackActionInterface;
     }
 
-    public void bindViewModels(List<TrackViewItem> trackItemsViewModelList) {
+    public void bindViewModels(List<TrackFavoriteViewItem> trackItemsViewModelList) {
         this.trackDetailsViewItemList.clear();
         this.trackDetailsViewItemList.addAll(trackItemsViewModelList);
         notifyDataSetChanged();

@@ -3,7 +3,7 @@ package android.project.spotitop.data.repository.topsongsdisplay.remote;
 import android.project.spotitop.SpotiTopApplication;
 import android.project.spotitop.data.api.TopSongsDisplayService;
 import android.project.spotitop.data.api.serialization.AuthorizationResponse;
-import android.project.spotitop.data.api.serialization.PlayistResponse;
+import android.project.spotitop.data.api.serialization.TopTracksResponse;
 import android.project.spotitop.data.api.serialization.Track;
 import android.util.Base64;
 
@@ -17,7 +17,7 @@ public class TopSongsDisplayRemoteDataSource {
     }
 
     //id of the playist
-    public Single<PlayistResponse> getDailyTopPlayistResponse(String tokenBearer) {
+    public Single<TopTracksResponse> getDailyTopPlayistResponse(String tokenBearer) {
         return topSongsDisplayService.getTopTracks(SpotiTopApplication.ID_TOP_PLAYIST, tokenBearer);
     }
 

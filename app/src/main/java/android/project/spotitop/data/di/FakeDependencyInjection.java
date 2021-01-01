@@ -2,7 +2,7 @@ package android.project.spotitop.data.di;
 
 import android.content.Context;
 import android.project.spotitop.data.api.TopSongsDisplayService;
-import android.project.spotitop.data.database.TopSongDatabase;
+import android.project.spotitop.data.database.FavoriteTopTracksDatabase;
 import android.project.spotitop.data.repository.topsongsdisplay.TopSongsDisplayDataRepository;
 import android.project.spotitop.data.repository.topsongsdisplay.TopSongsDisplayRepository;
 import android.project.spotitop.data.repository.topsongsdisplay.local.TopSongsDisplayLocalDataSource;
@@ -25,7 +25,7 @@ public class FakeDependencyInjection {
     private static Retrofit retrofit;
     private static Gson gson;
     private static TopSongsDisplayRepository topSongsDisplayRepository;
-    private static TopSongDatabase topSongDatabase;
+    private static FavoriteTopTracksDatabase favoriteTopTracksDatabase;
     private static Context applicationContext;
     private static ViewModelFactory viewModelFactory;
 
@@ -41,7 +41,7 @@ public class FakeDependencyInjection {
         if (topSongsDisplayRepository == null) {
             topSongsDisplayRepository = new TopSongsDisplayDataRepository(
                     new TopSongsDisplayRemoteDataSource(getTopSongsDisplayService()),
-                    new TopSongsDisplayLocalDataSource(getTopSongDatabase()),
+                    new TopSongsDisplayLocalDataSource(getFavoriteTopTracksDatabase()),
                     new TrackToTrackEntityMapper()
             );
         }
@@ -85,11 +85,11 @@ public class FakeDependencyInjection {
         applicationContext = context;
     }
 
-    public static TopSongDatabase getTopSongDatabase() {
-        if (topSongDatabase == null) {
-            topSongDatabase = Room.databaseBuilder(applicationContext,
-                    TopSongDatabase.class, "top-songs-database").build();
+    public static FavoriteTopTracksDatabase getFavoriteTopTracksDatabase() {
+        if (favoriteTopTracksDatabase == null) {
+            favoriteTopTracksDatabase = Room.databaseBuilder(applicationContext,
+                    FavoriteTopTracksDatabase.class, "top-songs-database").build();
         }
-        return topSongDatabase;
+        return favoriteTopTracksDatabase;
     }
 }

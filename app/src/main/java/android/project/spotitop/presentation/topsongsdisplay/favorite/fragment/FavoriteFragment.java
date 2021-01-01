@@ -2,7 +2,7 @@ package android.project.spotitop.presentation.topsongsdisplay.favorite.fragment;
 
 import android.os.Bundle;
 import android.project.spotitop.data.di.FakeDependencyInjection;
-import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackViewItem;
+import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackFavoriteViewItem;
 import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.FavoriteTrackActionInterface;
 import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.FavoriteTrackAdapter;
 import android.project.spotitop.presentation.viewmodel.Event;
@@ -55,10 +55,10 @@ public class FavoriteFragment extends Fragment implements FavoriteTrackActionInt
         trackFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(TrackFavoriteViewModel.class);
         System.out.println("FVVM is " + trackFavoriteViewModel);
 
-        trackFavoriteViewModel.getFavoriteTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackViewItem>>() {
+        trackFavoriteViewModel.getFavoriteTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackFavoriteViewItem>>() {
             @Override
-            public void onChanged(List<TrackViewItem> trackViewItemList) {
-                favoriteTrackAdapter.bindViewModels(trackViewItemList);
+            public void onChanged(List<TrackFavoriteViewItem> trackFavoriteViewItemList) {
+                favoriteTrackAdapter.bindViewModels(trackFavoriteViewItemList);
             }
         });
 

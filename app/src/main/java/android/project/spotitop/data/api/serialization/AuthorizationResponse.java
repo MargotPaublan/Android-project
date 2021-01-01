@@ -2,6 +2,10 @@ package android.project.spotitop.data.api.serialization;
 
 import com.google.gson.annotations.SerializedName;
 
+
+/**
+ * The spotify api response to get an access token (bearer) for the api authentification
+ */
 public class AuthorizationResponse {
     // Access token
     @SerializedName("access_token")
@@ -38,8 +42,5 @@ public class AuthorizationResponse {
     public void setExpiresInSec(int expiresInSec) {
         this.expiresInSec = expiresInSec;
     }
-
-
-
 
 }

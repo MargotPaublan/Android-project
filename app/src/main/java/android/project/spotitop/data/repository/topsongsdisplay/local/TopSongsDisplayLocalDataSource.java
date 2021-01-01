@@ -1,34 +1,45 @@
 package android.project.spotitop.data.repository.topsongsdisplay.local;
 
-import android.project.spotitop.data.database.TopSongDatabase;
+import android.project.spotitop.data.database.FavoriteTopTracksDatabase;
 import android.project.spotitop.data.database.TrackEntity;
-
 import java.util.List;
-
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
+/**
+ * Links the repository to the local database (which contains informations about user favorite tracks)
+ */
 public class TopSongsDisplayLocalDataSource {
-    private TopSongDatabase topSongDatabase;
+    // Favorite tracks database
+    private FavoriteTopTracksDatabase favoriteTopTracksDatabase;
 
-    public TopSongsDisplayLocalDataSource(TopSongDatabase topSongDatabase){
-        this.topSongDatabase = topSongDatabase;
+    public TopSongsDisplayLocalDataSource(FavoriteTopTracksDatabase favoriteTopTracksDatabase){
+        this.favoriteTopTracksDatabase = favoriteTopTracksDatabase;
     }
 
 
-    public TopSongDatabase getTopSongDatabase() {
-        return topSongDatabase;
+    /**
+     * Get all the favorite tracks stored in database
+     * @return the user favorite tracks
+     */
+    public Flowable<List<TrackEntity>> getFavoriteSavedTracks() {
+        return favoriteTopTracksDatabase.topSongsDAO().getFavoriteTracks();
     }
 
-    public Flowable<List<TrackEntity>> getSavedTracks() {
-        return topSongDatabase.topSongsDAO().getLastDailyTop();
+    /**
+     * Remove the track with the id "trackId" from the database
+     * @param trackId : the id of the track to remove
+     */
+    public Completable deleteFavoriteTrackFromDatabase(String trackId) {
+        return favoriteTopTracksDatabase.topSongsDAO().deleteFavoriteTrackFromDatabase(trackId);
     }
 
-    public Completable deleteTrack(String id) {
-        return topSongDatabase.topSongsDAO().deleteTrack(id);
+    /**
+     * Save the track entity into the "favoriteTracks" database
+     * @param trackEntity : the track entity to store into the database
+     */
+    public Completable saveFavoriteTrackIntoDatabase(TrackEntity trackEntity) {
+        return favoriteTopTracksDatabase.topSongsDAO().saveFavoriteTrackIntoDatabase(trackEntity);
     }
 
-    public Completable saveTrack(TrackEntity trackEntity) {
-        return topSongDatabase.topSongsDAO().addTrack(trackEntity);
-    }
 }

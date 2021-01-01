@@ -1,15 +1,13 @@
 package android.project.spotitop.presentation.topsongsdisplay.favorite.adapter;
 
-import java.util.List;
-
-public class TrackViewItem {
+public class TrackFavoriteViewItem {
     private String trackId;
-    private String iconUrl;
-    private String trackTitle;
+    private String trackIconUrl;
+    private String trackName;
     private String trackArtists;
     private String trackAlbum;
-    private int trackDuration;
-    private String rank;
+    private String trackDuration;
+    private String trackReleaseDate;
 
 
     public String getTrackId() {
@@ -20,20 +18,20 @@ public class TrackViewItem {
         this.trackId = trackId;
     }
 
-    public String getIconUrl() {
-        return iconUrl;
+    public String getTrackIconUrl() {
+        return trackIconUrl;
     }
 
-    public void setIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
+    public void setTrackIconUrl(String trackIconUrl) {
+        this.trackIconUrl = trackIconUrl;
     }
 
-    public String getTrackTitle() {
-        return trackTitle;
+    public String getTrackName() {
+        return trackName;
     }
 
-    public void setTrackTitle(String trackTitle) {
-        this.trackTitle = trackTitle;
+    public void setTrackName(String trackName) {
+        this.trackName = trackName;
     }
 
     public String getTrackArtists() {
@@ -52,19 +50,19 @@ public class TrackViewItem {
         this.trackAlbum = trackAlbum;
     }
 
-    public int getTrackDuration() {
+    public String getTrackDuration() {
         return trackDuration;
     }
 
-    public void setTrackDuration(int trackDuration) {
+    public void setTrackDuration(String trackDuration) {
         this.trackDuration = trackDuration;
     }
 
-    public String getRank() {
-        return rank;
+    public String getTrackReleaseDate() {
+        return trackReleaseDate;
     }
 
-    public void setRank(String rank) {
-        this.rank = rank;
+    public void setTrackReleaseDate(String trackReleaseDate) {
+        this.trackReleaseDate = trackReleaseDate;
     }
 }
