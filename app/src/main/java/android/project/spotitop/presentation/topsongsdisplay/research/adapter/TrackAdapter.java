@@ -56,6 +56,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
                 @Override
                 public void onClick(View v) {
                     favoriteButton.setActivated(!favoriteButton.isActivated());
+                    trackActionInterface.onFavoriteButton(trackViewItem.getTrackId(), favoriteButton.isActivated());
                 }
             });
 

@@ -2,9 +2,9 @@ package android.project.spotitop.presentation.topsongsdisplay.favorite.fragment;
 
 import android.os.Bundle;
 import android.project.spotitop.data.di.FakeDependencyInjection;
-import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackDetailViewItem;
-import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackDetailsActionInterface;
-import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackDetailsAdapter;
+import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackViewItem;
+import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.FavoriteTrackActionInterface;
+import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.FavoriteTrackAdapter;
 import android.project.spotitop.presentation.viewmodel.Event;
 import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
 import android.view.LayoutInflater;
@@ -22,11 +22,11 @@ import android.project.spotitop.R;
 
 import java.util.List;
 
-public class FavoriteFragment extends Fragment implements TrackDetailsActionInterface{
+public class FavoriteFragment extends Fragment implements FavoriteTrackActionInterface {
     public static final String TAB_NAME = "Favorites";
     private View rootView;
     private RecyclerView recyclerView;
-    private TrackDetailsAdapter trackDetailsAdapter;
+    private FavoriteTrackAdapter favoriteTrackAdapter;
     private TrackFavoriteViewModel trackFavoriteViewModel;
 
     private FavoriteFragment() {
@@ -55,10 +55,10 @@ public class FavoriteFragment extends Fragment implements TrackDetailsActionInte
         trackFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(TrackFavoriteViewModel.class);
         System.out.println("FVVM is " + trackFavoriteViewModel);
 
-        trackFavoriteViewModel.getFavoriteTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackDetailViewItem>>() {
+        trackFavoriteViewModel.getFavoriteTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackViewItem>>() {
             @Override
-            public void onChanged(List<TrackDetailViewItem> trackDetailsViewItemList) {
-                trackDetailsAdapter.bindViewModels(trackDetailsViewItemList);
+            public void onChanged(List<TrackViewItem> trackViewItemList) {
+                favoriteTrackAdapter.bindViewModels(trackViewItemList);
             }
         });
 
@@ -79,8 +79,8 @@ public class FavoriteFragment extends Fragment implements TrackDetailsActionInte
 
     private void setupRecyclerView() {
         recyclerView = rootView.findViewById(R.id.recycler_view);
-        trackDetailsAdapter = new TrackDetailsAdapter(this);
-        recyclerView.setAdapter(trackDetailsAdapter);
+        favoriteTrackAdapter = new FavoriteTrackAdapter(this);
+        recyclerView.setAdapter(favoriteTrackAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
@@ -97,4 +97,5 @@ public class FavoriteFragment extends Fragment implements TrackDetailsActionInte
     public void removeTrackFromFavorites(String trackId) {
         trackFavoriteViewModel.removeTrackFromFavorites(trackId);
     }
+
 }

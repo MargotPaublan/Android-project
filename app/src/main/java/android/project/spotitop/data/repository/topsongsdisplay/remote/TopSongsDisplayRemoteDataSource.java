@@ -21,7 +21,7 @@ public class TopSongsDisplayRemoteDataSource {
         return topSongsDisplayService.getTopTracks(SpotiTopApplication.ID_TOP_PLAYIST, tokenBearer);
     }
 
-    public Single<Track> getTrackDetails(String id, String tokenBearer){
+    public Single<Track> getTrackDetailsResponse(String id, String tokenBearer){
         return topSongsDisplayService.getTrackDetails(id, tokenBearer);
     }
 

@@ -23,7 +23,7 @@ public interface TopSongsDisplayService {
     Single<PlayistResponse> getTopTracks(@Path("playlist_id") String playlist_id, @Header("Authorization") String tokenBearer);
 
     //
-    @GET("/tracks/{track_id}")
+    @GET("/v1/tracks/{track_id}")
     Single<Track> getTrackDetails(@Path("track_id") String track_id, @Header("Authorization") String tokenBearer);
 
 

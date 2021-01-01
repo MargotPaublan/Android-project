@@ -1,12 +1,15 @@
 package android.project.spotitop.presentation.topsongsdisplay.favorite.adapter;
 
-public class TrackDetailViewItem {
+import java.util.List;
+
+public class TrackViewItem {
     private String trackId;
     private String iconUrl;
     private String trackTitle;
     private String trackArtists;
     private String trackAlbum;
     private int trackDuration;
+    private String rank;
 
 
     public String getTrackId() {
@@ -55,5 +58,13 @@ public class TrackDetailViewItem {
 
     public void setTrackDuration(int trackDuration) {
         this.trackDuration = trackDuration;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 }

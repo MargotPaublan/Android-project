@@ -7,6 +7,7 @@ import android.project.spotitop.data.database.TrackEntity;
 import android.project.spotitop.data.repository.topsongsdisplay.local.TopSongsDisplayLocalDataSource;
 import android.project.spotitop.data.repository.topsongsdisplay.mapper.TrackToTrackEntityMapper;
 import android.project.spotitop.data.repository.topsongsdisplay.remote.TopSongsDisplayRemoteDataSource;
+import android.util.Log;
 
 import java.util.List;
 
@@ -48,14 +49,14 @@ public class TopSongsDisplayDataRepository implements TopSongsDisplayRepository 
 
     @Override
     public Completable saveTrack(String id, String tokenBearer) {
-        Single<Track> track =  topSongsDisplayRemoteDataSource.getTrackDetails(id, tokenBearer);
+
+        Single<Track> track =  topSongsDisplayRemoteDataSource.getTrackDetailsResponse(id, tokenBearer);
         Single<TrackEntity> trackEntity = track.map(new Function<Track, TrackEntity>() {
             @Override
             public TrackEntity apply(Track track) throws Exception {
                 return trackToTrackEntityMapper.map(track);
             }
         });
-
 
 
         Completable trackEntityResult = trackEntity.flatMapCompletable(new Function<TrackEntity, CompletableSource>() {

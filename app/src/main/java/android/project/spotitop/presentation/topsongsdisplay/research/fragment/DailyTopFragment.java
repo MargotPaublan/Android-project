@@ -11,6 +11,7 @@ import android.project.spotitop.presentation.topsongsdisplay.research.adapter.Tr
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
 import android.project.spotitop.presentation.viewmodel.DailyTopTracksViewModel;
 import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.project.spotitop.R;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
     private RecyclerView recyclerView;
     private TrackAdapter trackAdapter;
     private ProgressBar progressBar;
+    private TextView spinnerLabelTextView;
     private DailyTopTracksViewModel dailyTopTracksViewModel;
     private TrackFavoriteViewModel trackFavoriteViewModel;
     private List<TrackViewItem> trackItemViewModelList;
@@ -114,6 +117,9 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
                 recyclerView.setLayoutManager(isSwitched ? new LinearLayoutManager(getContext()) : new GridLayoutManager(getContext(), 2));
             }
         });
+
+        spinnerLabelTextView = rootView.findViewById(R.id.spinner_label_textview);
+        spinnerLabelTextView.setText("Top :");
 
     }
 

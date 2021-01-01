@@ -14,8 +14,10 @@ public class TrackEntity {
 
     public String title;
     public String album;
-    //private List<String> artists;
-    private Integer duration;
+    public String artists;
+    public String rank;
+    public String iconUrl;
+
 
     @NonNull
     public String getId() {
@@ -42,14 +44,27 @@ public class TrackEntity {
         this.album = album;
     }
 
-    public Integer getDuration() {
-        return duration;
+    public String getArtists() {
+        return artists;
     }
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setArtists(String artists) {
+        this.artists = artists;
     }
 
+    public String getRank() {
+        return rank;
+    }
 
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
 
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
 }

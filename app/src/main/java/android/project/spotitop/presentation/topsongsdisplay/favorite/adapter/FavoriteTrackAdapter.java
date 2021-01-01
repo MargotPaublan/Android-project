@@ -1,9 +1,11 @@
 package android.project.spotitop.presentation.topsongsdisplay.favorite.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.project.spotitop.R;
@@ -16,7 +18,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrackDetailsAdapter extends RecyclerView.Adapter<TrackDetailsAdapter.TrackDetailsViewHolder>{
+public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdapter.TrackDetailsViewHolder>{
 
     public static class TrackDetailsViewHolder extends RecyclerView.ViewHolder {
 
@@ -24,40 +26,48 @@ public class TrackDetailsAdapter extends RecyclerView.Adapter<TrackDetailsAdapte
         private TextView artistsTextView;
         private TextView albumTextView;
         private TextView durationTextView;
+        private TextView releaseDateTextView;
         private ImageView iconImageView;
         private View v;
-        private TrackDetailViewItem trackDetailsViewItem;
-        private TrackDetailsActionInterface trackDetailsActionInterface;
-        private Button favoriteButton;
+        private TrackViewItem trackDetailsViewItem;
+        private FavoriteTrackActionInterface favoriteTrackActionInterface;
+        private ImageButton favoriteButton;
 
-        public TrackDetailsViewHolder(View v, final TrackDetailsActionInterface trackDetailsActionInterface) {
+        public TrackDetailsViewHolder(View v, final FavoriteTrackActionInterface favoriteTrackActionInterface) {
             super(v);
             this.v = v;
             titleTextView = v.findViewById(R.id.track_title_textview);
             albumTextView = v.findViewById(R.id.track_album_textview);
             durationTextView = v.findViewById(R.id.track_duration_textview);
             artistsTextView = v.findViewById(R.id.track_artists_textview);
+            releaseDateTextView = v.findViewById(R.id.track_release_date_textview);
             iconImageView = v.findViewById(R.id.track_icon_imageview);
             favoriteButton = v.findViewById(R.id.track_button_favorite);
             setupListeners();
-            this.trackDetailsActionInterface = trackDetailsActionInterface;
+            this.favoriteTrackActionInterface = favoriteTrackActionInterface;
         }
 
         private void setupListeners() {
             favoriteButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     //todo : changer le 'true'
-                    trackDetailsActionInterface.removeTrackFromFavorites(trackDetailsViewItem.getTrackId());
+                    favoriteTrackActionInterface.removeTrackFromFavorites(trackDetailsViewItem.getTrackId());
                 }
             });
         }
 
-        void bind(TrackDetailViewItem trackDetailViewItem) {
-            this.trackDetailsViewItem = trackDetailViewItem;
-            titleTextView.setText(trackDetailViewItem.getTrackTitle());
-            artistsTextView.setText(trackDetailViewItem.getTrackArtists());
-            albumTextView.setText(trackDetailViewItem.getTrackAlbum());
-            durationTextView.setText(trackDetailViewItem.getTrackDuration());
+        void bind(TrackViewItem trackViewItem) {
+            this.trackDetailsViewItem = trackViewItem;
+            Log.i("tracktitle1", trackViewItem.getTrackAlbum());
+            titleTextView.setText(trackViewItem.getTrackTitle());
+            //artistsTextView.setText(trackViewItem.getTrackArtists());
+            //rankTextView.setText(trackViewItem.getRank());
+            albumTextView.setText(trackViewItem.getTrackAlbum());
+            //durationTextView.setText(trackViewItem.getTrackDuration());
+
+
+            //artistsTextView.setText("test");
+            //albumTextView.setText("test");
 
             /*favoriteButton.setChecked(true);
             if (trackDetailViewItem.getBookDescription() == null) {
@@ -68,7 +78,7 @@ public class TrackDetailsAdapter extends RecyclerView.Adapter<TrackDetailsAdapte
 
 
             Glide.with(v)
-                    .load(trackDetailViewItem.getIconUrl())
+                    .load(trackViewItem.getIconUrl())
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(iconImageView);
@@ -77,16 +87,16 @@ public class TrackDetailsAdapter extends RecyclerView.Adapter<TrackDetailsAdapte
 
     }
 
-    private List<TrackDetailViewItem> trackDetailsViewItemList;
-    private TrackDetailsActionInterface trackDetailsActionInterface;
+    private List<TrackViewItem> trackDetailsViewItemList;
+    private FavoriteTrackActionInterface favoriteTrackActionInterface;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TrackDetailsAdapter(TrackDetailsActionInterface trackDetailsActionInterface) {
+    public FavoriteTrackAdapter(FavoriteTrackActionInterface favoriteTrackActionInterface) {
         this.trackDetailsViewItemList = new ArrayList<>();
-        this.trackDetailsActionInterface = trackDetailsActionInterface;
+        this.favoriteTrackActionInterface = favoriteTrackActionInterface;
     }
 
-    public void bindViewModels(List<TrackDetailViewItem> trackItemsViewModelList) {
+    public void bindViewModels(List<TrackViewItem> trackItemsViewModelList) {
         this.trackDetailsViewItemList.clear();
         this.trackDetailsViewItemList.addAll(trackItemsViewModelList);
         notifyDataSetChanged();
@@ -98,8 +108,8 @@ public class TrackDetailsAdapter extends RecyclerView.Adapter<TrackDetailsAdapte
                                                      int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_detailed_track, parent, false);
-        TrackDetailsViewHolder trackDetailsViewHolder = new TrackDetailsViewHolder(v, trackDetailsActionInterface);
+                .inflate(R.layout.item_track_favorite, parent, false);
+        TrackDetailsViewHolder trackDetailsViewHolder = new TrackDetailsViewHolder(v, favoriteTrackActionInterface);
         return trackDetailsViewHolder;
     }
 
