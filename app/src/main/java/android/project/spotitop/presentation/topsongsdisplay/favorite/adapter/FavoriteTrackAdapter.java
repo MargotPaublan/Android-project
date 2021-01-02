@@ -28,6 +28,7 @@ public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdap
         private TextView releaseDateTextView;
         private ImageView iconImageView;
         private View v;
+
         private TrackFavoriteViewItem trackDetailsViewItem;
         private FavoriteTrackActionInterface favoriteTrackActionInterface;
         private ImageButton favoriteButton;

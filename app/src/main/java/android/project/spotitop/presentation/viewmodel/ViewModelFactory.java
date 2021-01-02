@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
-
     private final TopSongsDisplayRepository topSongsDisplayRepository;
 
     public ViewModelFactory(TopSongsDisplayRepository topSongsDisplayRepository) {
@@ -18,13 +17,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(DailyTopTracksViewModel.class)) {
             return (T) new DailyTopTracksViewModel(topSongsDisplayRepository);
-        } else if (modelClass.isAssignableFrom(TrackFavoriteViewModel.class)){
+        } else {
             return (T) new TrackFavoriteViewModel(topSongsDisplayRepository);
         }
-            //Handle favorite view model case
-        else {
-            throw new IllegalArgumentException("Unknown ViewModel class");
-        }
+
 
     }
 }

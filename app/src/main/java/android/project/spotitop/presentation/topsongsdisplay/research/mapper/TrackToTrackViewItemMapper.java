@@ -20,13 +20,7 @@ public class TrackToTrackViewItemMapper {
         trackViewItem.setTrackDuration(track.getReadableTrackDurationFromMs());
         trackViewItem.setTrackReleaseDate(track.getAlbum().getReleaseDate());
         trackViewItem.setTrackImageUrl(track.getAlbum().getAlbumImages().get(0).getImageURL());
-
-
-        /*
-
-        bookViewItem.setFavorite(book.isFavorite());
-
-        */
+        trackViewItem.setFavorite(track.isFavorite());
 
         return trackViewItem;
     }

@@ -135,7 +135,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             trackNameTextView.setText(trackViewItem.getTrackName());
             artistsTextView.setText(trackViewItem.getTrackArtists());
             albumTextView.setText(trackViewItem.getTrackAlbum());
-
+            favoriteButton.setActivated(trackViewItem.isFavorite());
             Glide.with(v)
                     .load(trackViewItem.getTrackImageUrl())
                     .centerCrop()

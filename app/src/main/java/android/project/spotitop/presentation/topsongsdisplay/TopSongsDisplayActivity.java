@@ -19,14 +19,23 @@ public class TopSongsDisplayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Retrieve activity's view
         setContentView(R.layout.activity_main);
+
+        // Setup a viewpager with a top tracks listing fragment and a favorite fragment in this activity
         setupViewPagerAndTabs();
     }
 
+    /**
+     * Setup a viewpager with 2 tabs : on containing the top tracks listing fragment, and the other the favorite fragment, in this activity.
+     *
+     */
     private void setupViewPagerAndTabs() {
         viewPager = findViewById(R.id.tab_viewpager);
 
+        // the top tracks listing fragment
         final DailyTopFragment dailyTopFragment = DailyTopFragment.newInstance();
+        // the favorite fragment
         final FavoriteFragment favoriteFragment = FavoriteFragment.newInstance();
 
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {

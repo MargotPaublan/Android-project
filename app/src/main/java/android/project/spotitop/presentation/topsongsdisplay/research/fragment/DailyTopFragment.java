@@ -10,6 +10,7 @@ import android.project.spotitop.presentation.topsongsdisplay.research.adapter.Tr
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackAdapter;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
 import android.project.spotitop.presentation.viewmodel.DailyTopTracksViewModel;
+import android.project.spotitop.presentation.viewmodel.Event;
 import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -98,6 +99,7 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
                 List<TrackViewItem> sizedTrackViewModelList = trackItemViewModelList.subList(0, nbOfTracksToDisplay);
                 trackAdapter.bindViewModels(sizedTrackViewModelList);
             }
+
 
         });
 
@@ -197,11 +199,24 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
     @Override
     public void onFavoriteButton(String trackId, boolean isFavorite) {
         //Handle add and deletion to favorites
+
+        TrackViewItem trackViewItem = getTrackViewItem(trackId);
         if (isFavorite) {
+            trackViewItem.setFavorite(true);
             trackFavoriteViewModel.addTrackToFavorites(trackId);
         }
         else {
+            trackViewItem.setFavorite(false);
             trackFavoriteViewModel.removeTrackFromFavorites(trackId);
         }
+    }
+
+    public TrackViewItem getTrackViewItem(String id) {
+        for (TrackViewItem trackViewItem : trackItemViewModelList) {
+            if (trackViewItem.getTrackId().equals(id)) {
+                return trackViewItem;
+            }
+        }
+        return null;
     }
 }

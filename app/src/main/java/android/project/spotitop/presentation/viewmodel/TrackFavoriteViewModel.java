@@ -2,6 +2,7 @@ package android.project.spotitop.presentation.viewmodel;
 
 import android.project.spotitop.data.database.TrackEntity;
 import android.project.spotitop.data.repository.topsongsdisplay.TopSongsDisplayRepository;
+import android.project.spotitop.data.repository.topsongsdisplay.remote.AuthorizationToken;
 import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackFavoriteViewItem;
 import android.project.spotitop.presentation.topsongsdisplay.favorite.mapper.TrackEntityToTrackFavoriteViewItemMapper;
 
@@ -21,11 +22,13 @@ public class TrackFavoriteViewModel extends ViewModel {
     private TopSongsDisplayRepository topSongsDisplayRepository;
     private CompositeDisposable compositeDisposable;
     private TrackEntityToTrackFavoriteViewItemMapper trackEntityToTrackFavoriteViewItemMapper;
+    private AuthorizationToken authorizationToken;
 
     public TrackFavoriteViewModel(TopSongsDisplayRepository topSongsDisplayRepository) {
         this.topSongsDisplayRepository = topSongsDisplayRepository;
         this.compositeDisposable = new CompositeDisposable();
         this.trackEntityToTrackFavoriteViewItemMapper = new TrackEntityToTrackFavoriteViewItemMapper();
+        this.authorizationToken = AuthorizationToken.getInstance();
     }
 
     private MutableLiveData<List<TrackFavoriteViewItem>> favoriteTracks;
@@ -81,9 +84,12 @@ public class TrackFavoriteViewModel extends ViewModel {
         return trackDeletedEvent;
     }
 
-    // todo : changer tokenBearer
+
+
     public void addTrackToFavorites(final String trackId){
-        compositeDisposable.add(topSongsDisplayRepository.saveTrack(trackId, "Bearer BQCAU3oMnDR25Wy94yRUpV6P7Gi_kk1OmLWz6jPCUOrePvO5ZHJFQ8qPYjY0UM_NXhLX_G6ngDqFWmYdkfc")
+        //compositeDisposable.add(topSongsDisplayRepository.saveTrack(trackId, "Bearer BQCAU3oMnDR25Wy94yRUpV6P7Gi_kk1OmLWz6jPCUOrePvO5ZHJFQ8qPYjY0UM_NXhLX_G6ngDqFWmYdkfc")
+
+        compositeDisposable.add(topSongsDisplayRepository.saveTrack(trackId, authorizationToken.getTokenAuthorization())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableCompletableObserver() {

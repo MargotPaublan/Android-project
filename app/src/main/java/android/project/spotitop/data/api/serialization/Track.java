@@ -28,6 +28,8 @@ public class Track {
     @SerializedName("name")
     String trackName;
 
+    boolean isFavorite;
+
     public String getArtistsToString() {
         String res = "";
         for (Artist artist : artists) {
@@ -82,6 +84,14 @@ public class Track {
 
     public void setTrackName(String trackName) {
         this.trackName = trackName;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }
 
