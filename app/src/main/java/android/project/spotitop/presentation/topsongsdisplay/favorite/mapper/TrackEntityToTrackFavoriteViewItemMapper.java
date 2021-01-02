@@ -19,6 +19,7 @@ public class TrackEntityToTrackFavoriteViewItemMapper {
         trackFavoriteViewItem.setTrackDuration(trackEntity.getTrackDuration());
         trackFavoriteViewItem.setTrackReleaseDate(trackEntity.getTrackReleaseDate());
         trackFavoriteViewItem.setTrackIconUrl(trackEntity.getTrackIconUrl());
+        trackFavoriteViewItem.setFavorite(true);
 
         return trackFavoriteViewItem;
     }

@@ -13,7 +13,6 @@ public class SpotiTopApplication extends Application {
     public static final String CLIENT_ID = "d8e3b49e0c414ff89e9b8acb7b541a55";
     public static final String CLIENT_SECRET = "281502d7036b4dbca80192c16ec5cf53";
 
-    private String accessToken;
 
 
     @Override

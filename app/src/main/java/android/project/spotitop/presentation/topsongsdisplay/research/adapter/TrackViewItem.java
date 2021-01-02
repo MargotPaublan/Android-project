@@ -11,6 +11,7 @@ public class TrackViewItem implements Serializable {
     private String trackRank;
     private String trackDuration;
     private String trackReleaseDate;
+    private boolean isFavorite;
 
 
     public String getTrackId() {
@@ -75,5 +76,13 @@ public class TrackViewItem implements Serializable {
 
     public void setTrackReleaseDate(String trackReleaseDate) {
         this.trackReleaseDate = trackReleaseDate;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

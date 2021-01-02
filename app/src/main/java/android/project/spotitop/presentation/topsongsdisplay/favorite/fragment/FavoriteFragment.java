@@ -53,7 +53,6 @@ public class FavoriteFragment extends Fragment implements FavoriteTrackActionInt
 
     private void registerViewModels() {
         trackFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(TrackFavoriteViewModel.class);
-        System.out.println("FVVM is " + trackFavoriteViewModel);
 
         trackFavoriteViewModel.getFavoriteTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackFavoriteViewItem>>() {
             @Override

@@ -83,7 +83,7 @@ public class TrackFavoriteViewModel extends ViewModel {
 
     // todo : changer tokenBearer
     public void addTrackToFavorites(final String trackId){
-        compositeDisposable.add(topSongsDisplayRepository.saveTrack(trackId, "Bearer BQB2VmRjOyRXF_gE7vVs40RB9VHMYS60elDAXYqBIMlaN9XBwIFNtTEV93_O8X7KZN0qnX5JYFptteykBBc")
+        compositeDisposable.add(topSongsDisplayRepository.saveTrack(trackId, "Bearer BQCAU3oMnDR25Wy94yRUpV6P7Gi_kk1OmLWz6jPCUOrePvO5ZHJFQ8qPYjY0UM_NXhLX_G6ngDqFWmYdkfc")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableCompletableObserver() {

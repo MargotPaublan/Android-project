@@ -63,6 +63,7 @@ public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdap
             albumTextView.setText(trackFavoriteViewItem.getTrackAlbum());
             durationTextView.setText("Duration : " + trackFavoriteViewItem.getTrackDuration());
             releaseDateTextView.setText(" Release date : " + trackFavoriteViewItem.getTrackReleaseDate());
+            favoriteButton.setActivated(true);
 
             Glide.with(v)
                     .load(trackFavoriteViewItem.getTrackIconUrl())

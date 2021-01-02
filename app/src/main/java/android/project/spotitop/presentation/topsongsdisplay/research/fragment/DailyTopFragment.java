@@ -20,7 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -32,8 +31,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.project.spotitop.R;
 import android.widget.TextView;
-
 import java.util.List;
+
+
 
 public class DailyTopFragment extends Fragment implements TrackActionInterface, RecyclerViewClickListener {
     public static final String TAB_NAME = "Daily top tracks";
@@ -65,71 +65,31 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
         return rootView;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setupResearchView();
         setupRecyclerView();
-        progressBar = rootView.findViewById(R.id.progress_bar);
-
-        // Spinner setup
-        String[] nbOfTracks = { "3", "5", "10", "50"};
-        spinnerNbOfTracksView = rootView.findViewById(R.id.top_number_spinner);
-        spinnerNbOfTracksView.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, nbOfTracks));
-
-        spinnerNbOfTracksView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                int nbOfTracksToDisplay = Integer.parseInt(spinnerNbOfTracksView.getItemAtPosition(position).toString());
-
-                if (trackItemViewModelList != null) {
-                    List<TrackViewItem> sizedTrackViewModelList = trackItemViewModelList.subList(0, nbOfTracksToDisplay);
-                    trackAdapter.bindViewModels(sizedTrackViewModelList);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                //do nothing
-            }
-        });
-        spinnerNbOfTracksView.setSelection(3);
         registerViewModels();
 
 
+        // Retrieves views of screen elements
+        progressBar = rootView.findViewById(R.id.progress_bar);
         imageButtonGridView = rootView.findViewById(R.id.imagebutton_grid_view);
-        imageButtonGridView.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                imageButtonGridView.setVisibility(v.GONE);
-                imageButtonListView.setVisibility(v.VISIBLE);
-
-                boolean isSwitched = trackAdapter.toggleItemViewType();
-                recyclerView.setLayoutManager(isSwitched ? new LinearLayoutManager(getContext()) : new GridLayoutManager(getContext(), 2));
-            }
-        });
-
         imageButtonListView = rootView.findViewById(R.id.imagebutton_list_view);
-        imageButtonListView.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                imageButtonListView.setVisibility(v.GONE);
-                imageButtonGridView.setVisibility(v.VISIBLE);
-                boolean isSwitched = trackAdapter.toggleItemViewType();
-                recyclerView.setLayoutManager(isSwitched ? new LinearLayoutManager(getContext()) : new GridLayoutManager(getContext(), 2));
-            }
-        });
+        spinnerNbOfTracksView = rootView.findViewById(R.id.top_number_spinner);
 
-        spinnerLabelTextView = rootView.findViewById(R.id.spinner_label_textview);
-        spinnerLabelTextView.setText("Top :");
 
+        setupSpinner();
+        setupListeners();
+        dailyTopTracksViewModel.getAuthorizationToContactSpotifyAPI();
     }
 
 
     private void registerViewModels() {
         dailyTopTracksViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(DailyTopTracksViewModel.class);
         trackFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(TrackFavoriteViewModel.class);
-        //System.out.println("FVVM is " + bookFavoriteViewModel);
 
-        //todo : book**
         dailyTopTracksViewModel.getTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackViewItem>>() {
             @Override
             public void onChanged(List<TrackViewItem> trackItemViewModelListResults) {
@@ -149,8 +109,28 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
         });
     }
 
-    // todo : à faire
-    private void setupResearchView() {
+
+    private void setupRecyclerView() {
+        recyclerView = rootView.findViewById(R.id.recycler_view);
+        trackAdapter = new TrackAdapter(this, this);
+        recyclerView.setAdapter(trackAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        TrackViewItem trackViewItem = trackItemViewModelList.get(position);
+        Intent intent = new Intent(this.getContext(), DisplaySelectedTrackDetailsActivity.class);
+        intent.putExtra("TrackViewItem", trackViewItem);
+        startActivity(intent);
+    }
+
+
+
+
+    public void setupListeners() {
+        // Button "search" click listener
         imageButtonSearchView = rootView.findViewById(R.id.button_search_view);
         imageButtonSearchView.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -158,23 +138,61 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
                 dailyTopTracksViewModel.searchTopPlayist();
             }
         });
+
+        // Button "grid" click listener
+        imageButtonGridView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                imageButtonGridView.setVisibility(v.GONE);
+                imageButtonListView.setVisibility(v.VISIBLE);
+
+                boolean isSwitched = trackAdapter.toggleItemViewType();
+                recyclerView.setLayoutManager(isSwitched ? new LinearLayoutManager(getContext()) : new GridLayoutManager(getContext(), 2));
+            }
+        });
+
+
+        // Button "list" click listener
+        imageButtonListView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                imageButtonListView.setVisibility(v.GONE);
+                imageButtonGridView.setVisibility(v.VISIBLE);
+                boolean isSwitched = trackAdapter.toggleItemViewType();
+                recyclerView.setLayoutManager(isSwitched ? new LinearLayoutManager(getContext()) : new GridLayoutManager(getContext(), 2));
+            }
+        });
+
+
+        // Spinner selection listener
+        spinnerNbOfTracksView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                int nbOfTracksToDisplay = Integer.parseInt(spinnerNbOfTracksView.getItemAtPosition(position).toString());
+
+                if (trackItemViewModelList != null) {
+                    List<TrackViewItem> sizedTrackViewModelList = trackItemViewModelList.subList(0, nbOfTracksToDisplay);
+                    trackAdapter.bindViewModels(sizedTrackViewModelList);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //do nothing
+            }
+        });
+
     }
 
-    private void setupRecyclerView() {
-        recyclerView = rootView.findViewById(R.id.recycler_view);
+    public void setupSpinner() {
+        // Spinner setup
+        String[] nbOfTracks = { "3", "5", "10", "50"};
 
-        trackAdapter = new TrackAdapter(this, this);
-        recyclerView.setAdapter(trackAdapter);
+        spinnerNbOfTracksView.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, nbOfTracks));
+        spinnerNbOfTracksView.setSelection(3);
 
-        //if (trackAdapter.getViewType() == 0) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        /*}
-        else {
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        }*/
+        // Spinner label setup
+        spinnerLabelTextView = rootView.findViewById(R.id.spinner_label_textview);
+        spinnerLabelTextView.setText("Top :");
     }
-
-
 
     @Override
     public void onFavoriteButton(String trackId, boolean isFavorite) {
@@ -185,13 +203,5 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
         else {
             trackFavoriteViewModel.removeTrackFromFavorites(trackId);
         }
-    }
-
-    @Override
-    public void recyclerViewListClicked(View v, int position) {
-        TrackViewItem trackViewItem = trackItemViewModelList.get(position);
-        Intent intent = new Intent(this.getContext(), DisplaySelectedTrackDetailsActivity.class);
-        intent.putExtra("TrackViewItem", trackViewItem);
-        startActivity(intent);
     }
 }

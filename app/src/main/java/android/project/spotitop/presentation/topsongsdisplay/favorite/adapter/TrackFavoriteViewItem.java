@@ -8,6 +8,7 @@ public class TrackFavoriteViewItem {
     private String trackAlbum;
     private String trackDuration;
     private String trackReleaseDate;
+    private boolean isFavorite = false;
 
 
     public String getTrackId() {
@@ -64,5 +65,13 @@ public class TrackFavoriteViewItem {
 
     public void setTrackReleaseDate(String trackReleaseDate) {
         this.trackReleaseDate = trackReleaseDate;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

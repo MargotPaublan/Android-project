@@ -62,6 +62,7 @@ public class DailyTopTracksViewModel extends ViewModel {
                         authorizationToken.setExpiresAt(authorizationResponse.getExpiresInSec());
                         authorizationToken.setTokenBearer(authorizationResponse.getAccessToken());
                         authorizationToken.setTokenType(authorizationResponse.getTokenType());
+                        Log.i("token1", "ok" + authorizationToken.getTokenBearer());
                     }
 
                     @Override
@@ -80,11 +81,13 @@ public class DailyTopTracksViewModel extends ViewModel {
         isDataLoading.postValue(true);
         compositeDisposable.clear();
 
-        if (authorizationToken.getTokenBearer() == null || authorizationToken.isExpired()) {
+        /*if (authorizationToken.getTokenBearer() == null || authorizationToken.isExpired()) {
             getAuthorizationToContactSpotifyAPI();
-        }
+        }*/
 
-        Log.i("token", "ok" + authorizationToken.getTokenBearer());
+        //compositeDisposable.clear();
+
+        //Log.i("token", "ok" + authorizationToken.getTokenBearer());
         compositeDisposable.add(topSongsDisplayRepository.getDailyTopPlayistResponse(authorizationToken.getTokenAuthorization())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
