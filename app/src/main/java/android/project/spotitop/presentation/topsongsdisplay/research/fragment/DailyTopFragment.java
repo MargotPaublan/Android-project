@@ -10,16 +10,13 @@ import android.project.spotitop.presentation.topsongsdisplay.research.adapter.Tr
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackAdapter;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
 import android.project.spotitop.presentation.viewmodel.DailyTopTracksViewModel;
-import android.project.spotitop.presentation.viewmodel.Event;
 import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,9 +40,10 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
     private ImageButton imageButtonSearchView;
     private ImageButton imageButtonGridView;
     private ImageButton imageButtonListView;
+
     private RecyclerView recyclerView;
     private TrackAdapter trackAdapter;
-    private ProgressBar progressBar;
+
     private TextView spinnerLabelTextView;
     private DailyTopTracksViewModel dailyTopTracksViewModel;
     private TrackFavoriteViewModel trackFavoriteViewModel;
@@ -70,20 +68,35 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // Retrieves layout of screen elements
+        retrieveLayoutOfElements();
+
+        // Setup recycler view for the displayed list of tracks
         setupRecyclerView();
+
+        // Registers different viewmodels
         registerViewModels();
 
 
-        // Retrieves views of screen elements
-        progressBar = rootView.findViewById(R.id.progress_bar);
-        imageButtonGridView = rootView.findViewById(R.id.imagebutton_grid_view);
-        imageButtonListView = rootView.findViewById(R.id.imagebutton_list_view);
-        spinnerNbOfTracksView = rootView.findViewById(R.id.top_number_spinner);
 
 
         setupSpinner();
         setupListeners();
         dailyTopTracksViewModel.getAuthorizationToContactSpotifyAPI();
+    }
+
+
+    /**
+     * Retrieve views of different screen elements with which the user can interract
+     */
+    public void retrieveLayoutOfElements() {
+        recyclerView = rootView.findViewById(R.id.recycler_view);
+        imageButtonSearchView = rootView.findViewById(R.id.button_search_view);
+        imageButtonGridView = rootView.findViewById(R.id.imagebutton_grid_view);
+        imageButtonListView = rootView.findViewById(R.id.imagebutton_list_view);
+        spinnerNbOfTracksView = rootView.findViewById(R.id.top_number_spinner);
+        spinnerLabelTextView = rootView.findViewById(R.id.spinner_label_textview);
     }
 
 
@@ -103,17 +116,14 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
 
         });
 
-        dailyTopTracksViewModel.getIsDataLoading().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean isDataLoading) {
-                progressBar.setVisibility(isDataLoading ? View.VISIBLE : View.GONE);
-            }
-        });
     }
 
 
+    /**
+     * Setup recycler view to display the list of tracks.
+     * By default, we set the layout manager to be a list of elements.
+     */
     private void setupRecyclerView() {
-        recyclerView = rootView.findViewById(R.id.recycler_view);
         trackAdapter = new TrackAdapter(this, this);
         recyclerView.setAdapter(trackAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -133,7 +143,6 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
 
     public void setupListeners() {
         // Button "search" click listener
-        imageButtonSearchView = rootView.findViewById(R.id.button_search_view);
         imageButtonSearchView.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             public void onClick(View v) {
@@ -164,7 +173,7 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
         });
 
 
-        // Spinner selection listener
+        // Spinner selection listener : the number of tracks displayed in the list depends of the spinner selection
         spinnerNbOfTracksView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -184,22 +193,28 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
 
     }
 
+    /**
+     * Setup the spinner. The spinner selection determines how many tracks must be displayed on screen (in the recycler view).
+     * We set 4 different numbers of tracks to be displayed : 3, 5, 10 and 50.
+     */
     public void setupSpinner() {
         // Spinner setup
         String[] nbOfTracks = { "3", "5", "10", "50"};
 
+        // Spinner adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), R.layout.simple_spinner_item, nbOfTracks);
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-
         spinnerNbOfTracksView.setAdapter(adapter);
+
+        // Spinner selection by default
         spinnerNbOfTracksView.setSelection(3);
 
-
         // Spinner label setup
-        spinnerLabelTextView = rootView.findViewById(R.id.spinner_label_textview);
         spinnerLabelTextView.setText("Top :");
     }
 
+
+    
     @Override
     public void onFavoriteButton(String trackId, boolean isFavorite) {
         //Handle add and deletion to favorites
