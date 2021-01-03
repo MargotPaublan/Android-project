@@ -188,8 +188,12 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
         // Spinner setup
         String[] nbOfTracks = { "3", "5", "10", "50"};
 
-        spinnerNbOfTracksView.setAdapter(new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_1, nbOfTracks));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), R.layout.simple_spinner_item, nbOfTracks);
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+
+        spinnerNbOfTracksView.setAdapter(adapter);
         spinnerNbOfTracksView.setSelection(3);
+
 
         // Spinner label setup
         spinnerLabelTextView = rootView.findViewById(R.id.spinner_label_textview);

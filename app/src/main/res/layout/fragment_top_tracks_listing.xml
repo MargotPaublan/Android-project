@@ -28,8 +28,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="5dp"
         android:spinnerMode="dropdown"
-        android:overlapAnchor="false"
-        android:popupBackground="#262626"
+        android:dropDownVerticalOffset="42.5dp"
+        android:dropDownWidth="70dp"
         />
 
     <ImageButton
