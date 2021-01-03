@@ -29,7 +29,8 @@ public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdap
         private ImageView iconImageView;
         private View v;
 
-        private TrackFavoriteViewItem trackDetailsViewItem;
+        private TrackFavoriteViewItem trackFavoriteViewItem;
+
         private FavoriteTrackActionInterface favoriteTrackActionInterface;
         private ImageButton favoriteButton;
 
@@ -51,13 +52,15 @@ public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdap
             favoriteButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     //todo : changer le 'true'
-                    favoriteTrackActionInterface.removeTrackFromFavorites(trackDetailsViewItem.getTrackId());
+                    favoriteButton.setActivated(!favoriteButton.isActivated());
+                    favoriteTrackActionInterface.onFavoriteButton(trackFavoriteViewItem.getTrackId(), favoriteButton.isActivated());
+                    favoriteTrackActionInterface.removeTrackFromFavorites(trackFavoriteViewItem.getTrackId());
                 }
             });
         }
 
         void bind(TrackFavoriteViewItem trackFavoriteViewItem) {
-            this.trackDetailsViewItem = trackFavoriteViewItem;
+            this.trackFavoriteViewItem = trackFavoriteViewItem;
             Log.i("tracktitle1", trackFavoriteViewItem.getTrackAlbum());
             titleTextView.setText(trackFavoriteViewItem.getTrackName());
             artistsTextView.setText(trackFavoriteViewItem.getTrackArtists());
@@ -77,18 +80,23 @@ public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdap
 
     }
 
-    private List<TrackFavoriteViewItem> trackDetailsViewItemList;
+    private List<TrackFavoriteViewItem> trackFavoriteViewItemList;
+
+    public List<TrackFavoriteViewItem> getTrackFavoriteViewItemList() {
+        return trackFavoriteViewItemList;
+    }
+
     private FavoriteTrackActionInterface favoriteTrackActionInterface;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public FavoriteTrackAdapter(FavoriteTrackActionInterface favoriteTrackActionInterface) {
-        this.trackDetailsViewItemList = new ArrayList<>();
+        this.trackFavoriteViewItemList = new ArrayList<>();
         this.favoriteTrackActionInterface = favoriteTrackActionInterface;
     }
 
     public void bindViewModels(List<TrackFavoriteViewItem> trackItemsViewModelList) {
-        this.trackDetailsViewItemList.clear();
-        this.trackDetailsViewItemList.addAll(trackItemsViewModelList);
+        this.trackFavoriteViewItemList.clear();
+        this.trackFavoriteViewItemList.addAll(trackItemsViewModelList);
         notifyDataSetChanged();
     }
 
@@ -106,13 +114,13 @@ public class FavoriteTrackAdapter extends RecyclerView.Adapter<FavoriteTrackAdap
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(TrackDetailsViewHolder holder, int position) {
-        holder.bind(trackDetailsViewItemList.get(position));
+        holder.bind(trackFavoriteViewItemList.get(position));
     }
 
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return trackDetailsViewItemList.size();
+        return trackFavoriteViewItemList.size();
     }
 }

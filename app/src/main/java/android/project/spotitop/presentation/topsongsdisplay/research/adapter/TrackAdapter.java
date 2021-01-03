@@ -20,11 +20,12 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
     public static final int GRID_VIEW = 1;
     boolean isSwitchView = true;
     private static RecyclerViewClickListener itemClickListener;
-
-
-
     private List<TrackViewItem> trackViewItemList;
     private TrackActionInterface trackActionInterface;
+
+    public List<TrackViewItem> getTrackViewItemList() {
+        return trackViewItemList;
+    }
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -47,6 +48,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
         View v;
         TrackViewHolder trackViewHolder = null;
 
+        // Set the correct view type for grid/list layout managers
         if (viewType == LIST_VIEW) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_track, parent, false);
         }
@@ -66,6 +68,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
     }
 
 
+    // Get actual layout manager view
     @Override
     public int getItemViewType (int position) {
         if (isSwitchView){
@@ -75,6 +78,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
         }
     }
 
+    // Handle grid and list buttons for layout managers
     public boolean toggleItemViewType () {
         isSwitchView = !isSwitchView;
         return isSwitchView;
@@ -118,6 +122,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
             this.v.setOnClickListener(this);
         }
 
+        // Setup favorite button listener on all of recycler view items
         private void setupListeners() {
             favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,6 +134,8 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
 
         }
 
+
+        // Bind recycler view items infos
         void bind(final TrackViewItem trackViewItem) {
             this.trackViewItem = trackViewItem;
             rankTextView.setText(trackViewItem.getTrackRank() + ".");
@@ -144,6 +151,7 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
                     .into(iconImageView);
         }
 
+        // Handle click on recycler view items
         @Override
         public void onClick(View view) {
             itemClickListener.recyclerViewListClicked(v, this.getLayoutPosition());

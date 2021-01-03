@@ -100,20 +100,18 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
     }
 
 
+    /**
+     * Register view models and binds the list of tracks to the fragment adapter
+     */
     private void registerViewModels() {
         dailyTopTracksViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(DailyTopTracksViewModel.class);
         trackFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(TrackFavoriteViewModel.class);
 
-        dailyTopTracksViewModel.getTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackViewItem>>() {
+        dailyTopTracksViewModel.getTracksToDisplay().observe(getViewLifecycleOwner(), new Observer<List<TrackViewItem>>() {
             @Override
             public void onChanged(List<TrackViewItem> trackItemViewModelListResults) {
-                trackItemViewModelList = trackItemViewModelListResults;
-                int nbOfTracksToDisplay = Integer.parseInt(spinnerNbOfTracksView.getSelectedItem().toString());
-                List<TrackViewItem> sizedTrackViewModelList = trackItemViewModelList.subList(0, nbOfTracksToDisplay);
-                trackAdapter.bindViewModels(sizedTrackViewModelList);
+                trackAdapter.bindViewModels(trackItemViewModelListResults);
             }
-
-
         });
 
     }
@@ -130,9 +128,13 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
     }
 
 
+    /**
+     * Start a new activity when a track in the list is clicked, to show the track infos in a new activity
+     * @param position the position of the track in the list of tracks (in the viewmodel)
+     */
     @Override
     public void recyclerViewListClicked(View v, int position) {
-        TrackViewItem trackViewItem = trackItemViewModelList.get(position);
+        TrackViewItem trackViewItem = trackAdapter.getTrackViewItemList().get(position);
         Intent intent = new Intent(this.getContext(), DisplaySelectedTrackDetailsActivity.class);
         intent.putExtra("TrackViewItem", trackViewItem);
         startActivity(intent);
@@ -178,11 +180,7 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 int nbOfTracksToDisplay = Integer.parseInt(spinnerNbOfTracksView.getItemAtPosition(position).toString());
-
-                if (trackItemViewModelList != null) {
-                    List<TrackViewItem> sizedTrackViewModelList = trackItemViewModelList.subList(0, nbOfTracksToDisplay);
-                    trackAdapter.bindViewModels(sizedTrackViewModelList);
-                }
+                dailyTopTracksViewModel.setNbOfTracksToDisplay(nbOfTracksToDisplay);
             }
 
             @Override
@@ -214,11 +212,13 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
     }
 
 
-    
+    /**
+     * Handle add and deletion to favorites
+     * @param trackId : the id of the track to add/delete from favorites
+     * @param isFavorite : the state of the track favorite button
+     */
     @Override
     public void onFavoriteButton(String trackId, boolean isFavorite) {
-        //Handle add and deletion to favorites
-
         TrackViewItem trackViewItem = getTrackViewItem(trackId);
         if (isFavorite) {
             trackViewItem.setFavorite(true);
@@ -230,8 +230,13 @@ public class DailyTopFragment extends Fragment implements TrackActionInterface, 
         }
     }
 
+    /**
+     * Get the track view item of the list of track from viewmodel
+     * @param id : the id of the track to get
+     * @return the track view item corresponding to the id
+     */
     public TrackViewItem getTrackViewItem(String id) {
-        for (TrackViewItem trackViewItem : trackItemViewModelList) {
+        for (TrackViewItem trackViewItem : trackAdapter.getTrackViewItemList()) {
             if (trackViewItem.getTrackId().equals(id)) {
                 return trackViewItem;
             }

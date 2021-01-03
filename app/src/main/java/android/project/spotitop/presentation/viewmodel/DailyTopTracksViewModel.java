@@ -8,7 +8,6 @@ import android.project.spotitop.data.api.serialization.Track;
 import android.project.spotitop.data.database.TrackEntity;
 import android.project.spotitop.data.repository.topsongsdisplay.TopSongsDisplayRepository;
 import android.project.spotitop.data.repository.topsongsdisplay.remote.AuthorizationToken;
-import android.project.spotitop.presentation.topsongsdisplay.favorite.mapper.TrackEntityToTrackFavoriteViewItemMapper;
 import android.project.spotitop.presentation.topsongsdisplay.research.adapter.TrackViewItem;
 import android.project.spotitop.presentation.topsongsdisplay.research.mapper.TrackToTrackViewItemMapper;
 import android.util.Log;
@@ -38,11 +37,12 @@ public class DailyTopTracksViewModel extends ViewModel {
         this.authorizationToken = AuthorizationToken.getInstance();
     }
 
-    private MutableLiveData<List<TrackViewItem>> tracks = new MutableLiveData<List<TrackViewItem>>();
+    private List<TrackViewItem> allTracks = new ArrayList<TrackViewItem>();
 
-    public MutableLiveData<List<TrackViewItem>> getTracks() {
-        return tracks;
-    }
+    private MutableLiveData<List<TrackViewItem>> tracksToDisplay = new MutableLiveData<List<TrackViewItem>>();
+    private int nbOfTracksToDisplay;
+    public MutableLiveData<List<TrackViewItem>> getTracksToDisplay() { return tracksToDisplay; }
+
     List<String> favoriteTracksIds;
 
 
@@ -93,11 +93,9 @@ public class DailyTopTracksViewModel extends ViewModel {
                     @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onSuccess(AuthorizationResponse authorizationResponse) {
-
                         authorizationToken.setExpiresAt(authorizationResponse.getExpiresInSec());
                         authorizationToken.setTokenBearer(authorizationResponse.getAccessToken());
                         authorizationToken.setTokenType(authorizationResponse.getTokenType());
-                        Log.i("token1", "ok" + authorizationToken.getTokenBearer());
                     }
 
                     @Override
@@ -125,21 +123,17 @@ public class DailyTopTracksViewModel extends ViewModel {
                     public void onSuccess(TopTracksResponse topTracksResponse) {
                         List<Track> trackListResponse = new ArrayList<>();
 
-                        // 
-                        for (String id : favoriteTracks) {
-
-                            for (Item item : topTracksResponse.getListOfTracks().getItems()) {
+                        for (Item item : topTracksResponse.getListOfTracks().getItems()) {
+                            for (String id : favoriteTracks) {
                                 if (id.equals(item.getTrack().getId())) {
                                     item.getTrack().setFavorite(true);
                                 }
-                                trackListResponse.add(item.getTrack());
                             }
-
+                            trackListResponse.add(item.getTrack());
                         }
 
-
-
-                        tracks.setValue(trackToTrackViewItemMapper.map(trackListResponse));
+                        allTracks = trackToTrackViewItemMapper.map(trackListResponse);
+                        tracksToDisplay.setValue(allTracks.subList(0, nbOfTracksToDisplay));
                     }
 
                     @Override
@@ -150,4 +144,22 @@ public class DailyTopTracksViewModel extends ViewModel {
                 }));
     }
 
+    public void setNbOfTracksToDisplay(int nbOfTracksToDisplay) {
+        this.nbOfTracksToDisplay = nbOfTracksToDisplay;
+
+        if (allTracks.size() == 50) {
+            tracksToDisplay.setValue(allTracks.subList(0, nbOfTracksToDisplay));
+        }
+
+    }
+
+    public void changeFavoriteState(String trackId, boolean isFavorite) {
+        for (TrackViewItem trackViewItem : allTracks) {
+            if (trackId.equals(trackViewItem.getTrackId())) {
+                trackViewItem.setFavorite(isFavorite);
+                tracksToDisplay.setValue(allTracks.subList(0, nbOfTracksToDisplay));
+                break;
+            }
+        }
+    }
 }

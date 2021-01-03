@@ -5,6 +5,7 @@ import android.project.spotitop.data.di.FakeDependencyInjection;
 import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.TrackFavoriteViewItem;
 import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.FavoriteTrackActionInterface;
 import android.project.spotitop.presentation.topsongsdisplay.favorite.adapter.FavoriteTrackAdapter;
+import android.project.spotitop.presentation.viewmodel.DailyTopTracksViewModel;
 import android.project.spotitop.presentation.viewmodel.Event;
 import android.project.spotitop.presentation.viewmodel.TrackFavoriteViewModel;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ public class FavoriteFragment extends Fragment implements FavoriteTrackActionInt
     private RecyclerView recyclerView;
     private FavoriteTrackAdapter favoriteTrackAdapter;
     private TrackFavoriteViewModel trackFavoriteViewModel;
+    private DailyTopTracksViewModel dailyTopTracksViewModel;
 
     private FavoriteFragment() {
     }
@@ -53,6 +55,7 @@ public class FavoriteFragment extends Fragment implements FavoriteTrackActionInt
 
     private void registerViewModels() {
         trackFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(TrackFavoriteViewModel.class);
+        dailyTopTracksViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(DailyTopTracksViewModel.class);
 
         trackFavoriteViewModel.getFavoriteTracks().observe(getViewLifecycleOwner(), new Observer<List<TrackFavoriteViewItem>>() {
             @Override
@@ -95,6 +98,28 @@ public class FavoriteFragment extends Fragment implements FavoriteTrackActionInt
     @Override
     public void removeTrackFromFavorites(String trackId) {
         trackFavoriteViewModel.removeTrackFromFavorites(trackId);
+    }
+
+
+    public void onFavoriteButton(String trackId, boolean isFavorite) {
+        TrackFavoriteViewItem trackFavoriteViewItem = getFavoriteTrackViewItem(trackId);
+        //if (isFavorite) {
+            dailyTopTracksViewModel.changeFavoriteState(trackId, isFavorite);
+            //trackFavoriteViewModel.addTrackToFavorites(trackId);
+        /*}
+        else {
+            trackViewItem.setFavorite(false);
+            trackFavoriteViewModel.removeTrackFromFavorites(trackId);
+        }*/
+    }
+
+    public TrackFavoriteViewItem getFavoriteTrackViewItem(String id) {
+        for (TrackFavoriteViewItem trackFavoriteViewItem : favoriteTrackAdapter.getTrackFavoriteViewItemList()) {
+            if (trackFavoriteViewItem.getTrackId().equals(id)) {
+                return trackFavoriteViewItem;
+            }
+        }
+        return null;
     }
 
 }
